@@ -1,8 +1,11 @@
+import Banner from "./Banner"
+import Partners from "./Partners" 
 
 const Home = () => {
     return (
         <div>
-            Home
+            <Banner></Banner>
+            <Partners></Partners>
         </div>
     );
 };
