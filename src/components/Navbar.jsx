@@ -45,7 +45,7 @@ const Navbar = () => {
     <nav className="flex justify-between">
       <h1 onClick={() => navigate("/home")} className="cursor-pointer">ServiceTrek</h1>
       <ul className="flex">
-        {GuestMenu}
+        {!user ? GuestMenu : UserMenu}
       </ul>
       <div className="flex gap-5">
         <div>
