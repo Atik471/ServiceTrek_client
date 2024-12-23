@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -39,23 +40,23 @@ const Register = () => {
   };
 
   const handeRegisterWithEmail = async (data) => {
-    //const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
-    // if (!passwordRegex.test(password)) {
-    //   toast.error(
-    //     "Password must contain at least one uppercase letter, one lowercase letter, and be at least 6 characters long.",
-    //     {
-    //       position: "top-center",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       theme: "colored",
-    //     }
-    //   );
-    //   return;
-    // }
+    if (!passwordRegex.test(data.password)) {
+      toast.error(
+        "Password must contain at least one uppercase letter, one lowercase letter, and be at least 6 characters long.",
+        {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        }
+      );
+      return;
+    }
     setLoading(true);
     try {
       const userCredential = await createWithEmail(
@@ -117,6 +118,9 @@ const Register = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>ServiceTrek | Register</title>
+      </Helmet>
       <h2>Register</h2>
       <form onSubmit={handleSubmit(handeRegisterWithEmail)}>
         <div>

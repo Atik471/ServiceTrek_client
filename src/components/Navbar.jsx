@@ -52,7 +52,6 @@ const Navbar = () => {
           {!user ? <><button onClick={() => navigate("/login")}>Login</button>
           <button onClick={() => navigate("/register")}>Register</button></> :
           <button onClick={() => handleLogout()}>Logout</button>}
-          
         </div>
         <div>
           <p>{user?.displayName || ""}</p>

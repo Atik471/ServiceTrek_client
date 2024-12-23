@@ -3,15 +3,18 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user, setUser, createWithGoogle, signInWithEmail } = useContext(AuthContext);
+  const { user, setUser, createWithGoogle, signInWithEmail } =
+    useContext(AuthContext);
   const {
     register,
     handleSubmit,
-    formState: { errors }, setError
+    formState: { errors },
+    setError,
   } = useForm();
 
   const handleLoginWithGoogle = () => {
@@ -51,13 +54,16 @@ const Login = () => {
       .catch((err) => {
         const errorCode = err.code;
         const errorMessage = err.message;
-        if (errorCode === "auth/invalid-credential" || errorCode === "auth/user-not-found") {
-            setError("email", { message: "Invalid email or password." });
-          } else if (errorCode === "auth/wrong-password") {
-            setError("password", { message: "Incorrect password." });
-          } else {
-            setError("general", { message: "An unknown error occurred." });
-          }
+        if (
+          errorCode === "auth/invalid-credential" ||
+          errorCode === "auth/user-not-found"
+        ) {
+          setError("email", { message: "Invalid email or password." });
+        } else if (errorCode === "auth/wrong-password") {
+          setError("password", { message: "Incorrect password." });
+        } else {
+          setError("general", { message: "An unknown error occurred." });
+        }
         toast.error(`Login Failed! ${errorMessage}`, {
           position: "top-left",
           autoClose: 2000,
@@ -70,19 +76,22 @@ const Login = () => {
 
   if (loading) {
     return (
-        <div className="flex justify-center items-center h-screen">
-          <div className="relative">
-            <div className="w-28 h-28 border-8 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
-            <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
-              Loading...
-            </p>
-          </div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="relative">
+          <div className="w-28 h-28 border-8 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
+          <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
+            Loading...
+          </p>
         </div>
-      );
-}
+      </div>
+    );
+  }
 
   return (
     <div>
+      <Helmet>
+        <title>ServiceTrek | Login</title>
+      </Helmet>
       <h2>Login</h2>
       <form onSubmit={handleSubmit(handleLoginWithEmail)}>
         <div>
@@ -121,7 +130,8 @@ const Login = () => {
       </form>
       <button onClick={() => handleLoginWithGoogle()}>Login With Google</button>
       <p>
-        Don&apos;t have an account? <span onClick={() => navigate("/register")}>Register</span>
+        Don&apos;t have an account?{" "}
+        <span onClick={() => navigate("/register")}>Register</span>
       </p>
     </div>
   );
