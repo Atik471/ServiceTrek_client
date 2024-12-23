@@ -3,20 +3,29 @@ import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "../contexts/AuthProvider";
+import { toast } from "react-toastify";
 
 const ServiceDetails = () => {
   const [details, setDetails] = useState();
   const [loading, setLoading] = useState(true);
   const {id} = useParams();
   const serverDomain = useContext(LocationContext);
-  
+  const { user } = useContext(AuthContext);
+
+    const {
+      register,
+      handleSubmit,
+      reset,
+      formState: { errors },
+    } = useForm();
 
   useEffect(() => {
     const fetchDetails = async() => {
       try {
         const res = await axios.get(`${serverDomain}/services/${id}`)
         setDetails(res.data)
-        console.log(res.data);
       }
       catch(err) {
         console.log(err);
@@ -28,6 +37,30 @@ const ServiceDetails = () => {
 
     fetchDetails();
   }, [id, serverDomain])
+
+  console.log(user.photoURL)
+
+  const onSubmit = async (data) => {
+    const now = new Date();
+    const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
+    const trimmedReview = data.review.trim();
+        const review = {...data, review: trimmedReview, UserName: user.displayName, photo: user.photoURL, date: formattedDate}
+          await axios.post(`${serverDomain}/reviews/add`, review)
+          .then((res) => {
+            toast.success("Review posted successfuly!", {
+              position: "top-left",
+              autoClose: 2000,
+            });
+            console.log(res.data)
+            reset();
+          })
+          .catch((error) => {
+            toast.error(`Failed to post review. Please try again! ${error.message}`, {
+              position: "top-left",
+              autoClose: 2000,
+            });
+          });
+  }
 
   
   if (loading) {
@@ -54,8 +87,13 @@ const ServiceDetails = () => {
         {details.category}
       </p>
 
-      <form>
-
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="review">Add your review</label>
+        <textarea name="review" id="review" {...register("review", {
+          required: "Please add a review"
+        })}></textarea>
+        {errors.review && <p style={{ color: "red", marginBottom: "10px" }}>{errors.review.message}</p>}
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
