@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 const ServiceDetails = () => {
   const [details, setDetails] = useState();
+  const [reviews, setReviews] = useState();
   const [loading, setLoading] = useState(true);
   const {id} = useParams();
   const serverDomain = useContext(LocationContext);
@@ -38,13 +39,30 @@ const ServiceDetails = () => {
     fetchDetails();
   }, [id, serverDomain])
 
-  console.log(user.photoURL)
+  useEffect(() => {
+    const fetchReviews = async() => {
+      try {
+        const res = await axios.get(`${serverDomain}/reviews/${id}`)
+        setReviews(res.data)
+      }
+      catch(err) {
+        console.log(err);
+      }
+      // finally {
+      //   setLoading(false);
+      // }
+    }
+
+    fetchReviews();
+  }, [id, serverDomain] )
+
+  console.log(reviews)
 
   const onSubmit = async (data) => {
     const now = new Date();
     const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
     const trimmedReview = data.review.trim();
-        const review = {...data, review: trimmedReview, UserName: user.displayName, photo: user.photoURL, date: formattedDate}
+        const review = {...data, serviceId: id, review: trimmedReview, UserName: user.displayName, photo: user.photoURL, date: formattedDate}
           await axios.post(`${serverDomain}/reviews/add`, review)
           .then((res) => {
             toast.success("Review posted successfuly!", {
@@ -86,6 +104,13 @@ const ServiceDetails = () => {
         {details.company}
         {details.category}
       </p>
+
+      <p>Reviews</p>
+      <ul>
+        {reviews?.map((item) => (
+          <li key={item._id}>{item.review}</li>
+        ))}
+      </ul>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="review">Add your review</label>
