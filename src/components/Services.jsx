@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {LocationContext} from "../contexts/LocationProvider";
+import { useNavigate } from "react-router-dom";
 
 const Services = () => {
   const [items, setItems] = useState([]);
@@ -9,6 +10,7 @@ const Services = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const serverDomain = useContext(LocationContext);
+  const navigate = useNavigate();
 
   const limit = 10;
 
@@ -21,7 +23,6 @@ const Services = () => {
         );
         setItems(response.data.items);
         setTotalPages(response.data.totalPages);
-        console.log(response.data);
       } catch (err) {
         console.error("Error fetching data:", err);
       } finally {
@@ -62,7 +63,7 @@ const Services = () => {
       <h1>Paginated Items</h1>
       <ul>
         {items?.map((item) => (
-          <li key={item._id}>{item.title}</li>
+          <li key={item._id}>{item.title} <button onClick={() => navigate(`/service-details/${item._id}`)}>See Details</button></li>
         ))}
       </ul>
       <div>
