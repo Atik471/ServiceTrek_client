@@ -56,8 +56,6 @@ const ServiceDetails = () => {
     fetchReviews();
   }, [id, serverDomain] )
 
-  console.log(reviews)
-
   const onSubmit = async (data) => {
     const now = new Date();
     const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
