@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import {LocationContext} from "../contexts/LocationProvider";
+import { LocationContext } from "../contexts/LocationProvider";
 import { useNavigate } from "react-router-dom";
 
 const Services = () => {
@@ -31,7 +31,7 @@ const Services = () => {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, serverDomain]);
 
   const handlePrev = () => {
     if (page > 1) setPage((prev) => prev - 1);
@@ -63,7 +63,12 @@ const Services = () => {
       <h1>Paginated Items</h1>
       <ul>
         {items?.map((item) => (
-          <li key={item._id}>{item.title} <button onClick={() => navigate(`/service-details/${item._id}`)}>See Details</button></li>
+          <li key={item._id}>
+            {item.title}{" "}
+            <button onClick={() => navigate(`/service-details/${item._id}`)}>
+              See Details
+            </button>
+          </li>
         ))}
       </ul>
       <div>

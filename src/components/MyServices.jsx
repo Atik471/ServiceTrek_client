@@ -42,8 +42,6 @@ const MyServices = () => {
     );
   }
 
-  
-
   return (
     <div>
       <Helmet>

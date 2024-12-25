@@ -8,15 +8,15 @@ import {
   import axios from "axios";
   import PropTypes from "prop-types";
   
-  const DeleteReviews = ({ open, onClose }) => {
+  const DeleteReviews = ({ review, reviews, setReviews, open, onClose }) => {
     const handleDelete = async () => {
-      try {
-        const response = await axios.delete("/api/delete-item");
-        console.log("Delete successful:", response.data);
-        onClose(); // Close the modal
-      } catch (error) {
-        console.error("Failed to delete:", error.message);
-      }
+      // try {
+      //   const response = await axios.delete("/api/delete-item");
+      //   console.log("Delete successful:", response.data);
+      //   onClose();
+      // } catch (error) {
+      //   console.error("Failed to delete:", error.message);
+      // }
     };
   
     return (
@@ -40,6 +40,9 @@ import {
   DeleteReviews.propTypes = {
       open: PropTypes.bool.isRequired,
       onClose: PropTypes.func.isRequired,
+      review: PropTypes.object,
+      reviews: PropTypes.array,
+      setReviews: PropTypes.func,
   }
   
   export default DeleteReviews;

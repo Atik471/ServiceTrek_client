@@ -60,7 +60,7 @@ const ServiceDetails = () => {
     const now = new Date();
     const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
     const trimmedReview = data.review.trim();
-        const review = {...data, serviceId: id, review: trimmedReview, UserName: user.displayName, photo: user.photoURL, date: formattedDate}
+        const review = {...data, serviceId: id, review: trimmedReview, UserName: user.displayName, uid:user.uid, photo: user.photoURL, date: formattedDate}
           await axios.post(`${serverDomain}/reviews/add`, review)
           .then((res) => {
             toast.success("Review posted successfuly!", {
