@@ -26,7 +26,6 @@ const MyServices = () => {
         });
         setLoading(false);
       });
-    
   }, [serverDomain, user.uid]);
 
   if (loading) {
@@ -49,10 +48,16 @@ const MyServices = () => {
       </Helmet>
 
       {services && services.length > 0 ? (
-        services.map((service, index) => (
-          <MyService key={index} service={service} services={services} setServices={setServices}/>
-          // console.log(service)
-        ))
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6">
+          {services.map((service, index) => (
+            <MyService
+              key={index}
+              service={service}
+              services={services}
+              setServices={setServices}
+            />
+          ))}
+        </div>
       ) : (
         <p>No services found.</p>
       )}

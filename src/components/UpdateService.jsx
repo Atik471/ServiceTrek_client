@@ -4,6 +4,8 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  MenuItem,
+  TextField,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -40,10 +42,7 @@ const UpdateService = ({ service, setCurrservice, open, onClose }) => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await axios.patch(
-        `${serverDomain}/update-service/${service._id}`,
-        data
-      );
+      await axios.patch(`${serverDomain}/update-service/${service._id}`, data);
       setCurrservice({ ...service, ...data });
       reset();
       onClose();
@@ -75,135 +74,113 @@ const UpdateService = ({ service, setCurrservice, open, onClose }) => {
   }
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Update Item: {service?.title}</DialogTitle>
-      <DialogContent>
-        <form id="updateForm" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label htmlFor="title">Service Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        <div className="text-xl font-semibold text-gray-800">
+          Update Item: {service?.title}
+        </div>
+      </DialogTitle>
+      <DialogContent
+        dividers
+        sx={{
+          maxHeight: "400px",
+          overflowY: "auto", 
+        }}
+      >
+        <form id="updateForm" onSubmit={handleSubmit(onSubmit)} >
+          <div className="grid grid-cols-1 gap-4">
+            <TextField
+              label="Service Title"
+              variant="outlined"
+              fullWidth
               defaultValue={service?.title}
-              {...register("title", {
-                required: "Service Title is required",
-              })}
+              {...register("title", { required: "Service Title is required" })}
+              error={!!errors.title}
+              helperText={errors.title?.message}
             />
-            {errors.title && (
-              <p style={{ color: "red", marginBottom: "10px" }}>
-                {errors.title.message}
-              </p>
-            )}
-          </div>
 
-          <div>
-            <label htmlFor="company">Company name</label>
-            <input
-              type="text"
-              name="company"
-              id="company"
+            <TextField
+              label="Company Name"
+              variant="outlined"
+              fullWidth
               defaultValue={service?.company}
-              {...register("company", {
-                required: "Company name is required",
-              })}
+              {...register("company", { required: "Company name is required" })}
+              error={!!errors.company}
+              helperText={errors.company?.message}
             />
-            {errors.company && (
-              <p style={{ color: "red", marginBottom: "10px" }}>
-                {errors.company.message}
-              </p>
-            )}
-          </div>
 
-          <div>
-            <label htmlFor="imageURL">imageURL name</label>
-            <input
-              type="text"
-              name="imageURL"
-              id="imageURL"
+            <TextField
+              label="Image URL"
+              variant="outlined"
+              fullWidth
               defaultValue={service?.imageURL}
               {...register("imageURL")}
             />
-          </div>
 
-          <div>
-            <label htmlFor="price">Price</label>
-            <input
+            <TextField
+              label="Price"
               type="number"
-              name="price"
-              id="price"
+              variant="outlined"
+              fullWidth
               defaultValue={service?.price}
-              {...register("price", {
-                required: "Price is required",
-              })}
+              {...register("price", { required: "Price is required" })}
+              error={!!errors.price}
+              helperText={errors.price?.message}
             />
-            {errors.price && (
-              <p style={{ color: "red", marginBottom: "10px" }}>
-                {errors.price.message}
-              </p>
-            )}
-          </div>
 
-          <div>
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              name="description"
-              id="description"
+            <TextField
+              label="Description"
+              variant="outlined"
+              fullWidth
               defaultValue={service?.description}
               {...register("description", {
                 required: "Description is required",
               })}
+              error={!!errors.description}
+              helperText={errors.description?.message}
             />
-            {errors.description && (
-              <p style={{ color: "red", marginBottom: "10px" }}>
-                {errors.description.message}
-              </p>
-            )}
-          </div>
 
-          <div>
-            <label htmlFor="website">Website</label>
-            <input
-              type="text"
-              name="website"
-              id="website"
+            <TextField
+              label="Website"
+              variant="outlined"
+              fullWidth
               defaultValue={service?.website}
               {...register("website")}
             />
-          </div>
 
-          <div>
-            <label htmlFor="category">Service Category</label>
-            <select
+            <TextField
+              select
+              label="Service Category"
+              variant="outlined"
+              fullWidth
               defaultValue={service?.category}
               {...register("category", { required: "Category is required" })}
+              error={!!errors.category}
+              helperText={errors.category?.message}
             >
-              <option value="">-- Select a Category --</option>
+              <MenuItem value="">-- Select a Category --</MenuItem>
               {serviceCategories.map((item, index) => (
-                <option key={index} value={item}>
+                <MenuItem key={index} value={item}>
                   {item}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-
-            {errors.category && (
-              <p style={{ color: "red", marginBottom: "10px" }}>
-                {errors.category.message}
-              </p>
-            )}
+            </TextField>
           </div>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="default">
+      <DialogActions style={{padding: "12px"}}>
+        <Button onClick={onClose} color="default" style={{fontWeight: "600"}}>
           Cancel
         </Button>
         <Button
           type="submit"
           form="updateForm"
           variant="contained"
-          color="primary"
+          sx={{
+            backgroundColor: "#03853e",
+            ":hover": { backgroundColor: "#026f33" },
+          }}
+          style={{fontWeight: "600"}}
         >
           Submit
         </Button>

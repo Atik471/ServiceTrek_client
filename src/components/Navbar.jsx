@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 import { IoMenuSharp, IoCloseSharp } from "react-icons/io5";
 import { toast } from "react-toastify";

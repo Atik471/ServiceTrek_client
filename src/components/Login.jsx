@@ -36,7 +36,7 @@ const Login = () => {
       .then((userCredential) => {
         setUser(userCredential.user);
         navigate("/");
-        toast.success(`Welcome ${user}`, { position: "top-left", autoClose: 2000 });
+        toast.success(`Login Successful`, { position: "top-left", autoClose: 2000 });
       })
       .catch((error) => {
         toast.error(`Login Failed! ${error.message}`, { position: "top-left", autoClose: 2000 });
