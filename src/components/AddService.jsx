@@ -5,6 +5,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/AuthProvider";
+import { TextField, Button, MenuItem, Select, InputLabel, FormControl, CircularProgress } from "@mui/material";
 
 const AddService = () => {
   const serverDomain = useContext(LocationContext);
@@ -31,16 +32,17 @@ const AddService = () => {
     "Sports & Fitness",
     "Finance & Accounting",
     "Entertainment & Media"
-  ]
+  ];
 
   const onSubmit = async (data) => {
     setLoading(true);
     const now = new Date();
-const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
-    const service = {...data, UserName: user.displayName, date: formattedDate, uid: user.uid}
-      await axios.post(`${serverDomain}/services/add`, service)
+    const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
+    const service = { ...data, UserName: user.displayName, date: formattedDate, uid: user.uid };
+
+    await axios.post(`${serverDomain}/services/add`, service)
       .then(() => {
-        toast.success("Service added successfuly!", {
+        toast.success("Service added successfully!", {
           position: "top-left",
           autoClose: 2000,
         });
@@ -53,122 +55,161 @@ const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.ge
           autoClose: 2000,
         });
         setLoading(false);
-      })
-  }
+      });
+  };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="relative">
-          <div className="w-28 h-28 border-8 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
-          <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
-            Loading...
-          </p>
-        </div>
+        <CircularProgress color="primary" />
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="p-4 max-w-[94%] md:max-w-[80%] mx-auto mt-[2rem]">
       <Helmet>
         <title>ServiceTrek | Add Service</title>
       </Helmet>
-      Add Services
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="title">Service Title</label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            {...register("title", {
-              required: "Service Title is required",
-            })}
-          />
-          {errors.title && <p style={{ color: "red", marginBottom: "10px" }}>{errors.title.message}</p>}
-        </div>
+      <h2 className="text-2xl font-bold text-black mb-6">Add Service</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <TextField
+          label="Service Title"
+          variant="outlined"
+          fullWidth
+          {...register("title", { required: "Service Title is required" })}
+          error={!!errors.title}
+          helperText={errors.title?.message}
+          sx={{
+            input: {
+              borderRadius: 0, 
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 0,
+            },
+          }}
+        />
 
-        <div>
-          <label htmlFor="company">Company name</label>
-          <input
-            type="text"
-            name="company"
-            id="company"
-            {...register("company", {
-              required: "Company name is required",
-            })}
-          />
-          {errors.company && <p style={{ color: "red", marginBottom: "10px" }}>{errors.company.message}</p>}
-        </div>
+        <TextField
+          label="Company Name"
+          variant="outlined"
+          fullWidth
+          {...register("company", { required: "Company name is required" })}
+          error={!!errors.company}
+          helperText={errors.company?.message}
+          sx={{
+            input: {
+              borderRadius: 0,
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 0,
+            },
+          }}
+        />
 
-        <div>
-          <label htmlFor="imageURL">imageURL name</label>
-          <input
-            type="text"
-            name="imageURL"
-            id="imageURL"
-            {...register("imageURL")}
-          />
-        </div>
+        <TextField
+          label="Image URL"
+          variant="outlined"
+          fullWidth
+          {...register("imageURL")}
+          sx={{
+            input: {
+              borderRadius: 0,  
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 0,
+            },
+          }}
+        />
 
-        <div>
-          <label htmlFor="price">Price</label>
-          <input
-            type="number"
-            name="price"
-            id="price"
-            {...register("price", {
-              required: "Price is required",
-            })}
-          />
-          {errors.price && <p style={{ color: "red", marginBottom: "10px" }}>{errors.price.message}</p>}
-        </div>
+        <TextField
+          label="Price"
+          variant="outlined"
+          type="number"
+          fullWidth
+          {...register("price", { required: "Price is required" })}
+          error={!!errors.price}
+          helperText={errors.price?.message}
+          sx={{
+            input: {
+              borderRadius: 0,
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 0, 
+            },
+          }}
+        />
 
-        <div>
-          <label htmlFor="description">Description</label>
-          <input
-            type="text"
-            name="description"
-            id="description"
-            {...register("description", {
-              required: "Description is required",
-            })}
-          />
-          {errors.description && <p style={{ color: "red", marginBottom: "10px" }}>{errors.description.message}</p>}
-        </div>
+        <TextField
+          label="Description"
+          variant="outlined"
+          fullWidth
+          {...register("description", { required: "Description is required" })}
+          error={!!errors.description}
+          helperText={errors.description?.message}
+          sx={{
+            input: {
+              borderRadius: 0, 
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 0,
+            },
+          }}
+        />
 
-        <div>
-          <label htmlFor="website">Website</label>
-          <input
-            type="text"
-            name="website"
-            id="website"
-            {...register("website")}
-          />
-        </div>
+        <TextField
+          label="Website"
+          variant="outlined"
+          fullWidth
+          {...register("website")}
+          sx={{
+            input: {
+              borderRadius: 0, 
+            },
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 0, 
+            },
+          }}
+        />
 
-        <div>
-        <label htmlFor="category">Service Category</label>
-          <select
+        <FormControl fullWidth>
+          <InputLabel id="category">Service Category</InputLabel>
+          <Select
+            labelId="category"
             {...register("category", { required: "Category is required" })}
+            label="Service Category"
+            sx={{
+              borderRadius: 0,
+            }}
           >
-            <option value="">-- Select a Category --</option>
+            <MenuItem value="">-- Select a Category --</MenuItem>
             {serviceCategories.map((item, index) => (
-              <option key={index} value={item}>
+              <MenuItem key={index} value={item}>
                 {item}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-
+          </Select>
           {errors.category && (
-            <p style={{ color: "red", marginBottom: "10px" }}>
-              {errors.category.message}
-            </p>
+            <p style={{ color: "red", marginTop: "5px" }}>{errors.category.message}</p>
           )}
-        </div>
+        </FormControl>
 
-        <button type="submit">Add Service</button>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{
+            backgroundColor: "#03853e",
+            fontWeight: "bold",
+            "&:hover": {
+              backgroundColor: "#026d2d",
+            },
+          }}
+          style={{paddingTop: "12px", paddingBottom: "12px" }}
+        >
+          Add Service
+        </Button>
       </form>
     </div>
   );

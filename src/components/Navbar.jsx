@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 import { IoMenuSharp, IoCloseSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
@@ -29,53 +29,53 @@ const Navbar = () => {
 
   const GuestMenu = (
     <>
-      <Link
+      <NavLink
         to={"/home"}
         className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Home
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         to={"/services"}
         className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Services
-      </Link>
+      </NavLink>
     </>
   );
 
   const UserMenu = (
     <>
-      <Link
+      <NavLink
         to={"/home"}
         className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Home
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         to={"/services"}
         className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Services
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         to={"/add-service"}
         className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Add Service
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         to={"/my-reviews"}
         className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         My Reviews
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         to={"/my-services"}
         className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         My Services
-      </Link>
+      </NavLink>
     </>
   );
 
