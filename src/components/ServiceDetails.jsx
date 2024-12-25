@@ -38,11 +38,20 @@ const ServiceDetails = () => {
     fetchDetails();
   }, [id, serverDomain]);
 
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${serverDomain}/reviews/${id}`);
+      setReviews(res.data.result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const res = await axios.get(`${serverDomain}/reviews/${id}`);
-        setReviews(res.data);
+        setReviews(res.data.result);
       } catch (err) {
         console.log(err);
       }
@@ -73,7 +82,7 @@ const ServiceDetails = () => {
           position: "top-left",
           autoClose: 2000,
         });
-        setReviews([...reviews, data]);
+        fetchData();
         reset();
       })
       .catch((error) => {
@@ -117,17 +126,21 @@ const ServiceDetails = () => {
           </div>
 
           <div className="flex-1 space-y-2">
+            <div className="flex gap-4 items-center">
             <h1 className="text-2xl font-semibold text-gray-800">
               {details.title}
             </h1>
-            <p className="text-sm text-gray-600">By: {details.UserName}</p>
-            <p className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded inline-block">
+            <div className="text-lg font-bold text-primary">
+              ${details.price}
+            </div>
+            </div>
+            <p className="text-xs text-white font-bold bg-blue-500 px-2 py-1 rounded-lg inline-block">
               Category: {details.category}
             </p>
+            <p className="text-sm text-gray-600">Posted by: {details.UserName}</p>
+            <p className="text-sm text-gray-500">Company: {details.company}</p>
             <p className="text-gray-700">{details.description}</p>
-            <div className="text-lg font-bold text-primary">
-              Price: ${details.price}
-            </div>
+            <p className="text-sm text-gray-500">Date: {details.date}</p>
             <a
               href={details.website}
               target="_blank"
@@ -136,24 +149,22 @@ const ServiceDetails = () => {
             >
               Visit Website
             </a>
-            <p className="text-sm text-gray-500">Company: {details.company}</p>
-            <p className="text-sm text-gray-500">Date: {details.date}</p>
+            
+            
+            
           </div>
         </div>
       </div>
 
       <div className="bg-white rounded-md md:p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
-          Add Your Review
-        </h2>
+        <div className="flex flex-col md:flex-row justify-between items-center md:w-[80%] w-full ">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Add Your Review
+          </h2>
+          <h4 className="font-bold">Total Reviews: {reviews.length}</h4>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label
-              htmlFor="review"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Your Review
-            </label>
             <textarea
               id="review"
               name="review"
@@ -180,7 +191,7 @@ const ServiceDetails = () => {
       </div>
 
       <div className="p-6">
-        {reviews?.map((item, index) => (
+        {reviews?.slice().reverse().map((item, index) => (
           <Review key={index} review={item}></Review>
         ))}
       </div>
