@@ -1,43 +1,47 @@
-import { useContext, useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
+import { Button, TextField, Typography, IconButton, CircularProgress } from "@mui/material";
+import Lottie from "lottie-react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { user, setUser, createWithGoogle, signInWithEmail } =
-    useContext(AuthContext);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm();
+  const { user, setUser, createWithGoogle, signInWithEmail } = useContext(AuthContext);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [animationData, setAnimationData] = useState(null);
+
+  useEffect(() => {
+    const fetchAnimation = async () => {
+      try {
+        const response = await fetch("/assets/lottie/loginAnimation.json");
+        const data = await response.json();
+        setAnimationData(data);
+      } catch (error) {
+        console.error("Error fetching animation JSON:", error);
+      }
+    };
+
+    fetchAnimation();
+  }, []);
 
   const handleLoginWithGoogle = () => {
+    setLoading(true);
     createWithGoogle()
       .then((userCredential) => {
         setUser(userCredential.user);
         navigate("/");
-        console.log(userCredential);
-        toast.success(`Welcome ${user}`, {
-          position: "top-left",
-          autoClose: 2000,
-        });
+        toast.success(`Welcome ${user}`, { position: "top-left", autoClose: 2000 });
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        toast.error(`Login Failed! ${errorMessage}`, {
-          position: "top-left",
-          autoClose: 2000,
-        });
+        toast.error(`Login Failed! ${error.message}`, { position: "top-left", autoClose: 2000 });
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   };
 
   const handleLoginWithEmail = (data) => {
@@ -45,94 +49,102 @@ const Login = () => {
     signInWithEmail(data.email, data.password)
       .then((userCredential) => {
         setUser(userCredential.user);
-        toast.success("Login Successful!", {
-          position: "top-left",
-          autoClose: 2000,
-        });
+        toast.success("Login Successful!", { position: "top-left", autoClose: 2000 });
         navigate("/");
       })
       .catch((err) => {
-        const errorCode = err.code;
-        const errorMessage = err.message;
-        if (
-          errorCode === "auth/invalid-credential" ||
-          errorCode === "auth/user-not-found"
-        ) {
-          setError("email", { message: "Invalid email or password." });
-        } else if (errorCode === "auth/wrong-password") {
-          setError("password", { message: "Incorrect password." });
-        } else {
-          setError("general", { message: "An unknown error occurred." });
-        }
-        toast.error(`Login Failed! ${errorMessage}`, {
-          position: "top-left",
-          autoClose: 2000,
-        });
+        toast.error(`Login Failed! ${err.message}`, { position: "top-left", autoClose: 2000 });
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   };
-
+  
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="relative">
-          <div className="w-28 h-28 border-8 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
-          <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
-            Loading...
-          </p>
-        </div>
+        <CircularProgress size={60} />
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-gray-50 md:px-24 px-6">
       <Helmet>
         <title>ServiceTrek | Login</title>
       </Helmet>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit(handleLoginWithEmail)}>
-        <div>
-          {/* <label htmlFor="email">Email:</label> */}
-          <input
+      
+      <div className="w-full md:w-1/2 p-8 bg-white shadow-lg ">
+        <Typography variant="h4" gutterBottom className="text-center text-black pb-4" style={{ fontWeight: 700 }}>
+          Login
+        </Typography>
+        
+        <form onSubmit={handleSubmit(handleLoginWithEmail)} className="space-y-4">
+          <TextField
+            fullWidth
             type="email"
             id="email"
-            {...register("email", {
-              required: "Email is required",
-            })}
-            placeholder="Email"
-            required
+            label="Email"
+            {...register("email", { required: "Email is required" })}
+            variant="outlined"
+            error={!!errors.email}
+            helperText={errors.email ? errors.email.message : ""}
+            className="bg-gray-50"
           />
-          {errors.email && (
-            <p style={{ color: "red" }}>{errors.email.message}</p>
-          )}
-        </div>
 
-        <div style={{ marginBottom: "15px" }}>
-          {/* <label htmlFor="password">Password:</label> */}
-          <input
-            type="password"
+          <TextField
+            fullWidth
+            type={showPassword ? "text" : "password"}
             id="password"
-            {...register("password", {
-              required: "Password is required",
-            })}
-            placeholder="Password"
-            required
+            label="Password"
+            {...register("password", { required: "Password is required" })}
+            variant="outlined"
+            error={!!errors.password}
+            helperText={errors.password ? errors.password.message : ""}
+            className="bg-gray-50"
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </IconButton>
+              ),
+            }}
           />
-          {errors.password && (
-            <p style={{ color: "red" }}>{errors.password.message}</p>
-          )}
-        </div>
 
-        <button type="submit">Login</button>
-      </form>
-      <button onClick={() => handleLoginWithGoogle()}>Login With Google</button>
-      <p>
-        Don&apos;t have an account?{" "}
-        <span onClick={() => navigate("/register")}>Register</span>
-      </p>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            className="mt-4"
+            style = {{backgroundColor: "#03853e", fontWeight: 600, paddingTop: "12px", paddingBottom: "12px"}}
+          >
+            Login
+          </Button>
+
+          <Button
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            onClick={handleLoginWithGoogle}
+            className="mt-2"
+            style = {{backgroundColor: "black", color:"white", fontWeight: 600, paddingTop: "12px", paddingBottom: "12px"}}
+          >
+            Login With Google
+          </Button>
+
+          <p className="mt-4 text-center">
+            Don&apos;t have an account?{" "}
+            <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/register")}>
+              Register
+            </span>
+          </p>
+        </form>
+      </div>
+
+      <div className="hidden md:block w-1/2 p-8">
+        {animationData && <Lottie animationData={animationData} height={400} width={400} />}
+      </div>
     </div>
   );
 };

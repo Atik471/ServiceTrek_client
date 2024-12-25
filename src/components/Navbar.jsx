@@ -123,7 +123,7 @@ const Navbar = () => {
                 src={user.imageURL || "./assets/pfp.jpg"}
                 alt={user.displayName}
                 onError={(e) => {
-                  e.target.src = "path-to-fallback-image.jpg";
+                  e.target.src = "./assets/pfp.jpg";
                 }}
                 className="w-10 h-10 rounded-full cursor-pointer"
               />

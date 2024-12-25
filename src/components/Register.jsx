@@ -1,12 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { TextField, Button, CircularProgress, Typography } from "@mui/material";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Lottie from "lottie-react";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { setUser, createWithGoogle, createWithEmail } =
     useContext(AuthContext);
@@ -14,22 +18,39 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm();
+  const [animationData, setAnimationData] = useState(null);
+  
+    useEffect(() => {
+      const fetchAnimation = async () => {
+        try {
+          const response = await fetch("/assets/lottie/loginAnimation.json");
+          const data = await response.json();
+          setAnimationData(data);
+        } catch (error) {
+          console.error("Error fetching animation JSON:", error);
+        }
+      };
+  
+      fetchAnimation();
+    }, []);
 
-  const handleLoginWithGoogle = () => {
+  const handleTogglePassword = () => setShowPassword(!showPassword);
+
+  const handleRegisterWithGoogle = () => {
+    setLoading(true);
     createWithGoogle()
       .then((userCredential) => {
         setUser(userCredential.user);
         navigate("/");
-        toast.success("Login Successful!", {
+        toast.success("Registration Successful!", {
           position: "top-left",
           autoClose: 2000,
         });
       })
       .catch((error) => {
         const errorMessage = error.message;
-        toast.error(`Login Failed! ${errorMessage}`, {
+        toast.error(`Registration Failed! ${errorMessage}`, {
           position: "top-left",
           autoClose: 2000,
         });
@@ -39,7 +60,7 @@ const Register = () => {
       });
   };
 
-  const handeRegisterWithEmail = async (data) => {
+  const handleRegisterWithEmail = async (data) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
     if (!passwordRegex.test(data.password)) {
@@ -48,15 +69,11 @@ const Register = () => {
         {
           position: "top-center",
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
         }
       );
       return;
     }
+
     setLoading(true);
     try {
       const userCredential = await createWithEmail(
@@ -70,35 +87,14 @@ const Register = () => {
         position: "top-left",
         autoClose: 2000,
       });
-
       navigate("/");
     } catch (err) {
-      const errorCode = err.code;
-      console.log(err.code);
-      let errorMessage;
-
-      switch (errorCode) {
-        case "auth/email-already-in-use":
-          errorMessage =
-            "This email is already in use. Please try a different one.";
-          break;
-        case "auth/invalid-email":
-          errorMessage = "Invalid email format. Please check your email.";
-          break;
-        case "auth/weak-password":
-          errorMessage =
-            "Password is too weak. Please choose a stronger password.";
-          break;
-        default:
-          errorMessage = "An unknown error occurred during sign-up.";
-          break;
-      }
-
-      setError(errorMessage);
-      toast.error(`Sign up Failed! ${errorMessage}`, {
+      const errorMessage = err.message || "An unknown error occurred.";
+      toast.error(`Registration Failed! ${errorMessage}`, {
         position: "top-left",
         autoClose: 2000,
       });
+    } finally {
       setLoading(false);
     }
   };
@@ -106,86 +102,97 @@ const Register = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="relative">
-          <div className="w-28 h-28 border-8 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
-          <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
-            Loading...
-          </p>
-        </div>
+        <CircularProgress size={60} />
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="flex flex-col md:flex-row items-center justify-center h-screen bg-gray-100 py-4 md:px-24 px-6">
       <Helmet>
         <title>ServiceTrek | Register</title>
       </Helmet>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit(handeRegisterWithEmail)}>
-        <div>
-          <input
-            type="text"
-            id="name"
-            {...register("name", {
-              required: "Name is required",
-            })}
-            placeholder="Name"
-            required
+      <div className="w-full md:w-1/2 bg-white shadow-lg p-6">
+      <Typography variant="h4" gutterBottom className="text-center text-black pb-4" style={{ fontWeight: 700 }}>
+          Register
+        </Typography>
+        <form onSubmit={handleSubmit(handleRegisterWithEmail)} className="space-y-4">
+          <TextField
+            label="Name"
+            variant="outlined"
+            fullWidth
+            {...register("name", { required: "Name is required" })}
+            error={!!errors.name}
+            helperText={errors.name?.message}
           />
-          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
-        </div>
-        <div>
-          {/* <label htmlFor="email">Email:</label> */}
-          <input
+          <TextField
+            label="Email"
             type="email"
-            id="email"
-            {...register("email", {
-              required: "Email is required",
-            })}
-            placeholder="Email"
-            required
+            variant="outlined"
+            fullWidth
+            {...register("email", { required: "Email is required" })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
-          {errors.email && (
-            <p style={{ color: "red" }}>{errors.email.message}</p>
-          )}
-        </div>
-        <div>
-          <input
-            type="text"
-            id="photoURL"
+          <TextField
+            label="Photo URL"
+            type="url"
+            variant="outlined"
+            fullWidth
             {...register("photoURL")}
-            placeholder="Photo URL"
           />
-          {errors.photoURL && (
-            <p style={{ color: "red" }}>{errors.photoURL.message}</p>
-          )}
+          <div className="relative">
+            <TextField
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              variant="outlined"
+              fullWidth
+              {...register("password", { required: "Password is required" })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-3 text-gray-500"
+              onClick={handleTogglePassword}
+            >
+              {showPassword ? <FaEye size={24} /> : <FaEyeSlash size={24} />}
+            </button>
+          </div>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            style = {{backgroundColor: "#03853e", fontWeight: 600, paddingTop: "12px", paddingBottom: "12px"}}
+          >
+            Register
+          </Button>
+        </form>
+        <div className="flex items-center justify-center mt-4">
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleRegisterWithGoogle}
+            fullWidth
+            style = {{backgroundColor: "black", color:"white", fontWeight: 600, paddingTop: "12px", paddingBottom: "12px"}}
+          >
+            Register with Google
+          </Button>
         </div>
-        <div style={{ marginBottom: "15px" }}>
-          {/* <label htmlFor="password">Password:</label> */}
-          <input
-            type="password"
-            id="password"
-            {...register("password", {
-              required: "Password is required",
-            })}
-            placeholder="Password"
-            required
-          />
-          {errors.password && (
-            <p style={{ color: "red" }}>{errors.password.message}</p>
-          )}
-        </div>
-
-        <button type="submit">Register</button>
-      </form>
-      <button onClick={() => handleLoginWithGoogle()}>
-        Register With Google
-      </button>
-      <p>
-        Already have an account?
-        <span onClick={() => navigate("/login")}>Login</span>
-      </p>
+        <p className="text-sm text-gray-500 mt-4 text-center">
+          Already have an account?{" "}
+          <span
+            className="text-blue-500 cursor-pointer font-semibold"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </span>
+        </p>
+      </div>
+      <div className="hidden md:block w-1/2 p-8">
+        {animationData && <Lottie animationData={animationData} height={400} width={400} />}
+      </div>
     </div>
   );
 };
