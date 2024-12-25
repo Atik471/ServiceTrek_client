@@ -7,17 +7,54 @@ import {
   } from "@mui/material";
   import axios from "axios";
   import PropTypes from "prop-types";
+import { useContext, useState } from "react";
+import { LocationContext } from "../contexts/LocationProvider" 
+import { toast } from "react-toastify";
   
   const DeleteReviews = ({ review, reviews, setReviews, open, onClose }) => {
+    const [loading, setLoading] = useState(false);
+    const serverDomain = useContext(LocationContext);
+
     const handleDelete = async () => {
-      // try {
-      //   const response = await axios.delete("/api/delete-item");
-      //   console.log("Delete successful:", response.data);
-      //   onClose();
-      // } catch (error) {
-      //   console.error("Failed to delete:", error.message);
-      // }
+      setLoading(true);
+      console.log(review._id)
+      try {
+        const response = await axios.delete(
+          `${serverDomain}/delete-review/${review._id}`
+        );
+        setReviews(reviews.filter((item) => item._id !== review._id));
+        toast.success("Deleted Successfully!", {
+          position: "top-left",
+          autoClose: 2000,
+        });
+  
+        console.log("Delete successful:", response.data);
+        onClose();
+      } catch (error) {
+        console.error("Failed to delete:", error.message);
+        toast.error(`Failed to delete! ${error.message}`, {
+          position: "top-left",
+          autoClose: 2000,
+        });
+      } finally {
+        setLoading(false);
+      }
     };
+
+    
+
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
+            <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
+              Loading...
+            </p>
+          </div>
+        </div>
+      );
+    }
   
     return (
       <Dialog open={open} onClose={onClose}>
@@ -40,7 +77,7 @@ import {
   DeleteReviews.propTypes = {
       open: PropTypes.bool.isRequired,
       onClose: PropTypes.func.isRequired,
-      review: PropTypes.object,
+      review: PropTypes.object.isRequired,
       reviews: PropTypes.array,
       setReviews: PropTypes.func,
   }

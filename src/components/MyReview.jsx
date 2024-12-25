@@ -1,4 +1,4 @@
-import DeleteReviews from "./DeleteService";
+import DeleteReviews from "./DeleteReviews";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import PropTypes from "prop-types";

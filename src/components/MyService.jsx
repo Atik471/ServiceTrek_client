@@ -9,8 +9,6 @@ const MyService = ({ service, services, setServices }) => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [currservice, setCurrservice] = useState(service);
 
-  console.log(service)
-
   return (
     <div>
       {currservice.title}
