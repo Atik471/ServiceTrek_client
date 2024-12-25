@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { LocationContext } from "../contexts/LocationProvider";
-import { useNavigate } from "react-router-dom";
+import Service from "./Service";
 
 const Services = () => {
   const [items, setItems] = useState([]);
@@ -10,7 +10,7 @@ const Services = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const serverDomain = useContext(LocationContext);
-  const navigate = useNavigate();
+
 
   const limit = 10;
 
@@ -61,16 +61,11 @@ const Services = () => {
       </Helmet>
       Services
       <h1>Paginated Items</h1>
-      <ul>
+      <div className="grid md:grid-cols-4 grid-cols-1 gap-4 md:px-24 px-6">
         {items?.map((item) => (
-          <li key={item._id}>
-            {item.title}{" "}
-            <button onClick={() => navigate(`/service-details/${item._id}`)}>
-              See Details
-            </button>
-          </li>
+          <Service key={item._id} service={item}></Service>
         ))}
-      </ul>
+      </div>
       <div>
         <button onClick={handlePrev} disabled={page === 1}>
           Previous

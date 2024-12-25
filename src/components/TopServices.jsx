@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import Service from "./Service";
 
 const TopServices = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(false);
   const serverDomain = useContext(LocationContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,16 +39,11 @@ const TopServices = () => {
 
   return (
     <div>
-      <ul>
-        {services?.map((item) => (
-          <li key={item._id}>
-            {item.title}{" "}
-            <button onClick={() => navigate(`/service-details/${item._id}`)}>
-              See Details
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6">
+              {services?.map((item) => (
+                <Service key={item._id} service={item}></Service>
+              ))}
+            </div>
     </div>
   );
 };

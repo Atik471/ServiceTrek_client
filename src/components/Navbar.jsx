@@ -31,13 +31,13 @@ const Navbar = () => {
     <>
       <Link
         to={"/home"}
-        className="block border-b-4 border-transparent hover:border-primary pb-2"
+        className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Home
       </Link>
       <Link
         to={"/services"}
-        className="block border-b-4 border-transparent hover:border-primary pb-2"
+        className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Services
       </Link>
@@ -48,31 +48,31 @@ const Navbar = () => {
     <>
       <Link
         to={"/home"}
-        className="block border-b-4 border-transparent hover:border-primary pb-2"
+        className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Home
       </Link>
       <Link
         to={"/services"}
-        className="block border-b-4 border-transparent hover:border-primary pb-2"
+        className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Services
       </Link>
       <Link
         to={"/add-service"}
-        className="block border-b-4 border-transparent hover:border-primary pb-2"
+        className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         Add Service
       </Link>
       <Link
         to={"/my-reviews"}
-        className="block border-b-4 border-transparent hover:border-primary pb-2"
+        className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         My Reviews
       </Link>
       <Link
         to={"/my-services"}
-        className="block border-b-4 border-transparent hover:border-primary pb-2"
+        className="block border-b-4 border-transparent hover:border-white pb-2"
       >
         My Services
       </Link>
