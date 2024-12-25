@@ -12,7 +12,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { user, setUser, createWithGoogle, signInWithEmail } = useContext(AuthContext);
+  const { setUser, createWithGoogle, signInWithEmail } = useContext(AuthContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [animationData, setAnimationData] = useState(null);
 

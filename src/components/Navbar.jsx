@@ -121,7 +121,7 @@ const Navbar = () => {
             <Tooltip title={user.displayName} arrow>
               <img
                 src={user.imageURL || "./assets/pfp.jpg"}
-                alt={user.displayName}
+                alt=""
                 onError={(e) => {
                   e.target.src = "./assets/pfp.jpg";
                 }}
