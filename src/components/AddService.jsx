@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { LocationContext } from "../contexts/LocationProvider";
@@ -9,6 +9,7 @@ import { AuthContext } from "../contexts/AuthProvider";
 const AddService = () => {
   const serverDomain = useContext(LocationContext);
   const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -33,16 +34,17 @@ const AddService = () => {
   ]
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const now = new Date();
 const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
-    const service = {...data, UserName: user.displayName, date: formattedDate}
+    const service = {...data, UserName: user.displayName, date: formattedDate, uid: user.uid}
       await axios.post(`${serverDomain}/services/add`, service)
-      .then((res) => {
+      .then(() => {
         toast.success("Service added successfuly!", {
           position: "top-left",
           autoClose: 2000,
         });
-        console.log(res.data)
+        setLoading(false);
         reset();
       })
       .catch((error) => {
@@ -50,7 +52,21 @@ const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.ge
           position: "top-left",
           autoClose: 2000,
         });
-      });
+        setLoading(false);
+      })
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="relative">
+          <div className="w-28 h-28 border-8 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
+          <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
+            Loading...
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
