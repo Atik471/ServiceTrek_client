@@ -51,14 +51,18 @@ const MyReviews = () => {
       </Helmet>
 
       {reviews && reviews.length > 0 ? (
-        reviews.map((review, index) => (
-          <MyReview
-            key={index}
-            review={review}
-            reviews={reviews}
-            setReviews={setReviews}
-          />
-        ))
+        <div className="mt-12">
+          {
+            reviews.map((review, index) => (
+              <MyReview
+                key={index}
+                review={review}
+                reviews={reviews}
+                setReviews={setReviews}
+              />
+            ))
+          }
+        </div>
       ) : (
         <p>No reviews found.</p>
       )}

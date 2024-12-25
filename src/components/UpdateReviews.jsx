@@ -59,7 +59,7 @@ const UpdateReviews = ({ review, setCurrReview, open, onClose }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Update Item</DialogTitle>
+      <DialogTitle>Update Review</DialogTitle>
       <DialogContent>
         <form id="updateForm" onSubmit={handleSubmit(onSubmit)}>
           <TextField

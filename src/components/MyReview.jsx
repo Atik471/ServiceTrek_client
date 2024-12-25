@@ -10,27 +10,59 @@ const MyReview = ({ review, reviews, setReviews }) => {
   const [currReview, setCurrReview] = useState(review);
 
   return (
-    <div>
-          {currReview.review}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setUpdateOpen(true)}
-          >
-            Update
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => setDeleteOpen(true)}
-          >
-            Delete
-          </Button>
-    
-          <UpdateReviews review={currReview} setCurrReview={setCurrReview} open={updateOpen} onClose={() => setUpdateOpen(false)} />
-    
-          <DeleteReviews review={currReview} reviews={reviews} setReviews={setReviews} open={deleteOpen} onClose={() => setDeleteOpen(false)} />
+    <div className="bg-white  flex items-start space-x-4 mb-8 shadow-md max-w-[90%] mx-auto rounded-lg p-5">
+      <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
+        <img
+          src={currReview.image || "/assets/pfp.jpg"}
+          alt={currReview.UserName}
+          className="w-full h-full object-cover"
+          onError={(e) => (e.target.src = "/assets/pfp.jpg")}
+        />
+      </div>
+
+      <div className="flex-1">
+        <div className="mb-2">
+          <p className="text-sm text-gray-500">
+            {" "}
+            <span className=" mr-3 text-sm font-semibold text-gray-800">
+              {currReview.UserName}
+            </span>
+            {currReview.date}
+          </p>
         </div>
+
+        <p className=" text-gray-700">{currReview.review}</p>
+      </div>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setUpdateOpen(true)}
+      >
+        Update
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => setDeleteOpen(true)}
+      >
+        Delete
+      </Button>
+
+      <UpdateReviews
+        review={currReview}
+        setCurrReview={setCurrReview}
+        open={updateOpen}
+        onClose={() => setUpdateOpen(false)}
+      />
+
+      <DeleteReviews
+        review={currReview}
+        reviews={reviews}
+        setReviews={setReviews}
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+      />
+    </div>
   );
 };
 
