@@ -4,6 +4,7 @@ import Partners from "./Partners";
 import TopServices from "./TopServices";
 import CountSection from "./CountSection";
 import OurStorySection from "./OurStorySection";
+import Newsletter from "./Newsletter";
 
 const Home = () => {
   return (
@@ -21,6 +22,7 @@ const Home = () => {
       <Partners></Partners>
       <CountSection></CountSection>
       <OurStorySection></OurStorySection>
+      <Newsletter></Newsletter>
     </div>
   );
 };
