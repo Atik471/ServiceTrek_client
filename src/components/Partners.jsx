@@ -1,4 +1,4 @@
-import React from "react";
+import { motion } from "framer-motion";
 
 const partners = [
   {
@@ -12,24 +12,48 @@ const partners = [
     description: "Crafting user-friendly and visually stunning design solutions for the platform.",
   },
   {
-    name: "Micahel Franti",
+    name: "Michael Franti",
     logo: "/assets/silvr-inside-pages_14.jpg",
     description: "Ensuring robust security and authentication systems to protect user data.",
   },
 ];
 
+const fadeInVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 5 } },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.3 },
+  },
+};
+
 const Partners = () => {
   return (
     <section className="py-16 bg-gray-50 px-24">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-semibold text-center mb-12 text-gray-800">
+        <motion.h2
+          initial="hidden"
+          animate="visible"
+          variants={fadeInVariants}
+          className="text-3xl font-semibold text-center mb-12 text-gray-800"
+        >
           Meet Our Partners
-        </h2>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        </motion.h2>
+        <motion.div
+          className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {partners.map((partner, index) => (
-            <div
+            <motion.div
               key={index}
               className="bg-white rounded-lg hover:shadow-lg transition-shadow p-6 text-center"
+              variants={fadeInVariants}
             >
               <img
                 src={partner.logo}
@@ -40,9 +64,9 @@ const Partners = () => {
                 {partner.name}
               </h3>
               <p className="text-gray-600 text-sm">{partner.description}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

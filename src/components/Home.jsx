@@ -11,6 +11,11 @@ const Home = () => {
                 <title>ServiceTrek | Home</title>
             </Helmet>
             <Banner></Banner>
+            <div className="my-16">
+            <h2 className="text-3xl font-semibold text-center mb-4 text-gray-800">
+          Explore Services
+        </h2>
+            </div>
             <TopServices></TopServices>
             <Partners></Partners>
         </div>

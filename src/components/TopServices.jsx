@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import Service from "./Service";
+import { motion } from "framer-motion";
 
 const TopServices = () => {
   const [services, setServices] = useState([]);
@@ -24,6 +25,22 @@ const TopServices = () => {
     fetchData();
   }, [serverDomain]);
 
+  // Framer Motion Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 1.5 } },
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -38,13 +55,18 @@ const TopServices = () => {
   }
 
   return (
-    <div>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6">
-        {services?.map((item) => (
-          <Service key={item._id} service={item}></Service>
-        ))}
-      </div>
-    </div>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6"
+    >
+      {services?.map((item) => (
+        <motion.div key={item._id} variants={itemVariants}>
+          <Service service={item} />
+        </motion.div>
+      ))}
+    </motion.div>
   );
 };
 
