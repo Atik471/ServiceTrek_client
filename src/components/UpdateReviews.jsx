@@ -12,10 +12,12 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const UpdateReviews = ({ review, setCurrReview, open, onClose }) => {
   const [loading, setLoading] = useState(false);
   const serverDomain = useContext(LocationContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -26,7 +28,9 @@ const UpdateReviews = ({ review, setCurrReview, open, onClose }) => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await axios.patch(`${serverDomain}/update-review/${review._id}`, data);
+      await axios.patch(`${serverDomain}/update-review/${review._id}`, data, {
+        withCredentials: true
+      });
       setCurrReview({ ...review, ...data });
       reset();
       onClose();
@@ -39,6 +43,7 @@ const UpdateReviews = ({ review, setCurrReview, open, onClose }) => {
         position: "top-left",
         autoClose: 2000,
       });
+      if(error.response.status === 401) navigate('/login')
     } finally {
       setLoading(false);
     }

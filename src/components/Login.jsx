@@ -7,6 +7,8 @@ import { Helmet } from "react-helmet-async";
 import { Button, TextField, Typography, IconButton, CircularProgress } from "@mui/material";
 import Lottie from "lottie-react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
+import { LocationContext } from "../contexts/LocationProvider"
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -15,6 +17,7 @@ const Login = () => {
   const { setUser, createWithGoogle, signInWithEmail } = useContext(AuthContext);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [animationData, setAnimationData] = useState(null);
+  const serverDomain = useContext(LocationContext);
 
   useEffect(() => {
     const fetchAnimation = async () => {
@@ -35,6 +38,8 @@ const Login = () => {
     createWithGoogle()
       .then((userCredential) => {
         setUser(userCredential.user);
+        axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
+        .then(res => console.log(res.data))
         navigate("/");
         toast.success(`Login Successful`, { position: "top-left", autoClose: 2000 });
       })
@@ -49,6 +54,8 @@ const Login = () => {
     signInWithEmail(data.email, data.password)
       .then((userCredential) => {
         setUser(userCredential.user);
+        axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
+        .then(cookie => console.log(cookie))
         toast.success("Login Successful!", { position: "top-left", autoClose: 2000 });
         navigate("/");
       })

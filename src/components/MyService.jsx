@@ -34,7 +34,6 @@ const MyService = ({ service, services, setServices }) => {
           </span>
         </div>
 
-        {/* Price with icon */}
         <div className="flex items-center space-x-1">
           <FaDollarSign className="text-primary" />
           <p className="text-lg font-bold text-primary">{service.price}</p>

@@ -6,11 +6,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/AuthProvider";
 import { TextField, Button, MenuItem, Select, InputLabel, FormControl, CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const AddService = () => {
   const serverDomain = useContext(LocationContext);
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -40,7 +42,7 @@ const AddService = () => {
     const formattedDate = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
     const service = { ...data, UserName: user.displayName, date: formattedDate, uid: user.uid };
 
-    await axios.post(`${serverDomain}/services/add`, service)
+    await axios.post(`${serverDomain}/services/add`, service, {withCredentials: true})
       .then(() => {
         toast.success("Service added successfully!", {
           position: "top-left",
@@ -55,6 +57,7 @@ const AddService = () => {
           autoClose: 2000,
         });
         setLoading(false);
+        if(error.response.status === 401) navigate('/login')
       });
   };
 

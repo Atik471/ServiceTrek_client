@@ -10,24 +10,24 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const DeleteService = ({ service, services, setServices, open, onClose }) => {
   const serverDomain = useContext(LocationContext);
   const [loading, setLoading] = useState(false);
+  const naviagte = useNavigate();
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        `${serverDomain}/delete-service/${service._id}`
+      await axios.delete(
+        `${serverDomain}/delete-service/${service._id}`, {withCredentials: true}
       );
       setServices(services.filter((item) => item._id !== service._id));
       toast.success("Deleted Successfully!", {
         position: "top-left",
         autoClose: 2000,
       });
-
-      console.log("Delete successful:", response.data);
       onClose();
     } catch (error) {
       console.error("Failed to delete:", error.message);
@@ -35,6 +35,7 @@ const DeleteService = ({ service, services, setServices, open, onClose }) => {
         position: "top-left",
         autoClose: 2000,
       });
+      if(error.response.status === 401) naviagte('/login');
     } finally {
       setLoading(false);
     }

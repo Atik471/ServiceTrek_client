@@ -13,10 +13,12 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const UpdateService = ({ service, setCurrservice, open, onClose }) => {
   const [loading, setLoading] = useState(false);
   const serverDomain = useContext(LocationContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -55,6 +57,7 @@ const UpdateService = ({ service, setCurrservice, open, onClose }) => {
         position: "top-left",
         autoClose: 2000,
       });
+      if(error.response.status === 401) navigate('/login')
     } finally {
       setLoading(false);
     }

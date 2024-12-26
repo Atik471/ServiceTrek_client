@@ -10,17 +10,19 @@ import {
 import { useContext, useState } from "react";
 import { LocationContext } from "../contexts/LocationProvider" 
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
   
   const DeleteReviews = ({ review, reviews, setReviews, open, onClose }) => {
     const [loading, setLoading] = useState(false);
     const serverDomain = useContext(LocationContext);
+    const navigate = useNavigate();
 
     const handleDelete = async () => {
       setLoading(true);
       console.log(review._id)
       try {
         const response = await axios.delete(
-          `${serverDomain}/delete-review/${review._id}`
+          `${serverDomain}/delete-review/${review._id}`, {withCredentials: true}
         );
         setReviews(reviews.filter((item) => item._id !== review._id));
         toast.success("Deleted Successfully!", {
@@ -36,6 +38,7 @@ import { toast } from "react-toastify";
           position: "top-left",
           autoClose: 2000,
         });
+        if(error.response.status === 401)navigate('/login');
       } finally {
         setLoading(false);
       }

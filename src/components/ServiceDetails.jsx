@@ -29,7 +29,10 @@ const ServiceDetails = () => {
         const res = await axios.get(`${serverDomain}/services/${id}`);
         setDetails(res.data);
       } catch (err) {
-        console.log(err);
+        toast.error(`Failed to fetch your service ${err}`, {
+          position: "top-left",
+          autoClose: 2000,
+        });
       } finally {
         setLoading(false);
       }
@@ -43,7 +46,10 @@ const ServiceDetails = () => {
       const res = await axios.get(`${serverDomain}/reviews/${id}`);
       setReviews(res.data.result);
     } catch (err) {
-      console.log(err);
+      toast.error(`Failed to fetch your services ${err}`, {
+        position: "top-left",
+        autoClose: 2000,
+      });
     }
   };
 
@@ -53,7 +59,10 @@ const ServiceDetails = () => {
         const res = await axios.get(`${serverDomain}/reviews/${id}`);
         setReviews(res.data.result);
       } catch (err) {
-        console.log(err);
+        toast.error(`Failed to fetch your services ${err}`, {
+          position: "top-left",
+          autoClose: 2000,
+        });
       }
     };
 
@@ -127,17 +136,19 @@ const ServiceDetails = () => {
 
           <div className="flex-1 space-y-2">
             <div className="flex gap-4 items-center">
-            <h1 className="text-2xl font-semibold text-gray-800">
-              {details.title}
-            </h1>
-            <div className="text-lg font-bold text-primary">
-              ${details.price}
-            </div>
+              <h1 className="text-2xl font-semibold text-gray-800">
+                {details.title}
+              </h1>
+              <div className="text-lg font-bold text-primary">
+                ${details.price}
+              </div>
             </div>
             <p className="text-xs text-white font-bold bg-blue-500 px-2 py-1 rounded-lg inline-block">
               Category: {details.category}
             </p>
-            <p className="text-sm text-gray-600">Posted by: {details.UserName}</p>
+            <p className="text-sm text-gray-600">
+              Posted by: {details.UserName}
+            </p>
             <p className="text-sm text-gray-500">Company: {details.company}</p>
             <p className="text-gray-700">{details.description}</p>
             <p className="text-sm text-gray-500">Date: {details.date}</p>
@@ -149,9 +160,6 @@ const ServiceDetails = () => {
             >
               Visit Website
             </a>
-            
-            
-            
           </div>
         </div>
       </div>
@@ -191,9 +199,12 @@ const ServiceDetails = () => {
       </div>
 
       <div className="p-6">
-        {reviews?.slice().reverse().map((item, index) => (
-          <Review key={index} review={item}></Review>
-        ))}
+        {reviews
+          ?.slice()
+          .reverse()
+          .map((item, index) => (
+            <Review key={index} review={item}></Review>
+          ))}
       </div>
     </div>
   );

@@ -7,11 +7,14 @@ import { Helmet } from "react-helmet-async";
 import { TextField, Button, CircularProgress, Typography } from "@mui/material";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Lottie from "lottie-react";
+import axios from "axios";
+import { LocationContext } from "../contexts/LocationProvider"
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const serverDomain = useContext(LocationContext);
   const { setUser, createWithGoogle, createWithEmail } =
     useContext(AuthContext);
   const {
@@ -42,6 +45,8 @@ const Register = () => {
     createWithGoogle()
       .then((userCredential) => {
         setUser(userCredential.user);
+        axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
+        .then(cookie => console.log(cookie))
         navigate("/");
         toast.success("Registration Successful!", {
           position: "top-left",
@@ -83,6 +88,8 @@ const Register = () => {
         data.photoURL
       );
       setUser(userCredential.user);
+      axios.post( `${serverDomain}/jwt`, userCredential.user.displayName, {withCredentials: true})
+        .then(cookie => console.log(cookie))
       toast.success("Registration Successful!", {
         position: "top-left",
         autoClose: 2000,

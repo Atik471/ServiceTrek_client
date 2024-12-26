@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import MyService from "./MyService";
 import { FaFilter, FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const MyServices = () => {
   const { user } = useContext(AuthContext);
@@ -14,6 +15,7 @@ const MyServices = () => {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("");
+  const navigate = useNavigate();
 
   const serviceCategories = [
     "Health & Wellness",
@@ -33,7 +35,7 @@ const MyServices = () => {
   useEffect(() => {
     console.log(category)
     axios
-      .get(`${serverDomain}/my-services/${user.uid}`,
+      .get(`${serverDomain}/my-services/${user.uid}`, {withCredentials: true},
         {
           params: {
             title: searchText,
@@ -51,6 +53,7 @@ const MyServices = () => {
           autoClose: 2000,
         });
         setLoading(false);
+        if(err.response.status === 401)navigate('/login');
       });
   }, [serverDomain, user.uid]);
 
@@ -61,7 +64,7 @@ const MyServices = () => {
     console.log(searchText) 
     try {
       setLoading(true);
-      const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`, {
+      const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`,{withCredentials: true}, {
         params: {
           title: searchText,
           company: searchText,
@@ -70,7 +73,11 @@ const MyServices = () => {
       });
       setServices(response.data);
     } catch (err) {
-      console.error("Error fetching data:", err);
+      toast.error(`Failed to fetch your services ${err}`, {
+        position: "top-left",
+        autoClose: 2000,
+      });
+      if(err.response.status === 401) navigate('login')
     } finally {
       setLoading(false);
     }
@@ -81,43 +88,24 @@ const MyServices = () => {
     setCategory(selectedCategory);   
     try {
       setLoading(true);
-      const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`, {
+      const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`,{withCredentials: true} , {
         params: {
           title: searchText, 
           company: searchText, 
           category: selectedCategory, 
         },
       });
-      console.log(response.data)
       setServices(response.data); 
     } catch (err) {
-      console.error("Error fetching data:", err);
+      toast.error(`Failed to fetch your services ${err}`, {
+        position: "top-left",
+        autoClose: 2000,
+      });
+      if(err.response.status === 401) navigate('login')
     } finally {
       setLoading(false);
     }
   };
-  
-
-  // const handleCategoryReset = async () => {
-  //   setCategory("");
-  //   // handleCategoryChange()
-  //   try {
-  //     setLoading(true);
-  //     const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`, {
-  //       params: {
-  //         title: searchText, 
-  //         company: searchText, 
-  //         category: serviceCategories, 
-  //       },
-  //     });
-  //     console.log(response.data)
-  //     setServices(response.data); 
-  //   } catch (err) {
-  //     console.error("Error fetching data:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   if (loading) {
     return (

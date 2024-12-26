@@ -5,25 +5,27 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import MyReview from "./MyReview";
+import { useNavigate } from "react-router-dom";
 
 const MyReviews = () => {
   const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
-
   const serverDomain = useContext(LocationContext);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${serverDomain}/my-reviews/${user.uid}`);
+        const res = await axios.get(`${serverDomain}/my-reviews/${user.uid}`, {withCredentials: true});
         setReviews(res.data);
       } catch (err) {
         toast.error(`Failed to fetch your services ${err}`, {
           position: "top-left",
           autoClose: 2000,
         });
+        if(err.response.status === 401) navigate('/login');
       } finally {
         setLoading(false);
       }
