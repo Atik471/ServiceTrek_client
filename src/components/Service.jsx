@@ -14,8 +14,9 @@ const Service = ({ service }) => {
         }}
         className="w-full h-48 object-cover mb-4 rounded-md"
       />
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col space-y-2">
         <h3 className="text-xl font-semibold text-gray-800">{service.title}</h3>
+        <h3 className="text-sm font-semibold pb-2 text-gray-800">Company: {service.company}</h3>
         {service.description?.length > 100 ? `${service.description.slice(0, 100)}...` : service.description}
 
         <div className="flex items-center space-x-2">

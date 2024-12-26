@@ -161,7 +161,7 @@ const ServiceDetails = () => {
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
             Add Your Review
           </h2>
-          <h4 className="font-bold">Total Reviews: {reviews.length}</h4>
+          <h4 className="font-bold">Total Reviews: {reviews?.length}</h4>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
