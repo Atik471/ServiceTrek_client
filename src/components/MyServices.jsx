@@ -33,16 +33,19 @@ const MyServices = () => {
   ];
 
   useEffect(() => {
-    console.log(category)
+    console.log(category);
     axios
-      .get(`${serverDomain}/my-services/${user.uid}`, {withCredentials: true},
+      .get(
+        `${serverDomain}/my-services/${user.uid}`,
+        { withCredentials: true },
         {
           params: {
             title: searchText,
             company: searchText,
             category: category,
           },
-        })
+        }
+      )
       .then((res) => {
         setServices(res.data);
         setLoading(false);
@@ -53,55 +56,63 @@ const MyServices = () => {
           autoClose: 2000,
         });
         setLoading(false);
-        if(err.response.status === 401)navigate('/login');
+        if (err.response.status === 401) navigate("/login");
       });
   }, [serverDomain, user.uid]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    const inputValue = e.target.searchInput.value.trim(); 
-    setSearchText(inputValue); 
-    console.log(searchText) 
+    const inputValue = e.target.searchInput.value.trim();
+    setSearchText(inputValue);
+    console.log(searchText);
     try {
       setLoading(true);
-      const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`,{withCredentials: true}, {
-        params: {
-          title: searchText,
-          company: searchText,
-          category: category,
-        },
-      });
+      const response = await axios.get(
+        `${serverDomain}/my-services/search/${user.uid}`,
+        { withCredentials: true },
+        {
+          params: {
+            title: searchText,
+            company: searchText,
+            category: category,
+          },
+        }
+      );
       setServices(response.data);
     } catch (err) {
       toast.error(`Failed to fetch your services ${err}`, {
         position: "top-left",
         autoClose: 2000,
       });
-      if(err.response.status === 401) navigate('login')
+      if (err.response.status === 401) navigate("login");
     } finally {
       setLoading(false);
     }
   };
 
   const handleCategoryChange = async (e) => {
-    const selectedCategory = e.target.value; 
-    setCategory(selectedCategory);   
+    const selectedCategory = e.target.value;
+    setCategory(selectedCategory);
     try {
       setLoading(true);
-      const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`,{withCredentials: true} , {
-        params: {
-          title: searchText, 
-          company: searchText, 
-          category: selectedCategory, 
-        },
-      });
-      setServices(response.data); 
+      const response = await axios.get(
+        `${serverDomain}/my-services/search/${user.uid}`,
+        { withCredentials: true },
+        {
+          params: {
+            title: searchText,
+            company: searchText,
+            category: selectedCategory,
+          },
+        }
+      );
+      setServices(response.data);
     } catch (err) {
       toast.error(`Failed to fetch your services ${err}`, {
         position: "top-left",
         autoClose: 2000,
       });
-      if(err.response.status === 401) navigate('login')
+      if (err.response.status === 401) navigate("login");
     } finally {
       setLoading(false);
     }
@@ -135,7 +146,7 @@ const MyServices = () => {
             type="text"
             placeholder="Search by title, company, or category..."
             value={searchText}
-            name="searchInput" 
+            name="searchInput"
             onChange={(e) => setSearchText(e.target.value)}
             className="w-full outline-none text-gray-700"
           />
@@ -174,17 +185,30 @@ const MyServices = () => {
           </button>
         )} */}
       </div>
+
       {services && services.length > 0 ? (
-        <div className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6">
-          {services.map((service, index) => (
-            <MyService
-              key={index}
-              service={service}
-              services={services}
-              setServices={setServices}
-            />
-          ))}
-        </div>
+        <table className="table-auto bg-white shadow-md rounded-lg mx-auto w-[90%]">
+          <thead>
+            <tr className="bg-gray-200 text-gray-700">
+              <th className="px-4 py-2 text-left">Service Title</th>
+              <th className="px-4 py-2 text-left">Company</th>
+              <th className="px-4 py-2 text-left">Category</th>
+              <th className="px-4 py-2 text-left">Price</th>
+              <th className="px-4 py-2 text-left">Description</th>
+              <th className="px-4 py-2 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {services.map((service, index) => (
+              <MyService
+                key={index}
+                service={service}
+                services={services}
+                setServices={setServices}
+              />
+            ))}
+          </tbody>
+        </table>
       ) : (
         <p>No services found.</p>
       )}

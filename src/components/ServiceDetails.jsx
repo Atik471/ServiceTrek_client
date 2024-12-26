@@ -78,6 +78,7 @@ const ServiceDetails = () => {
     const review = {
       ...data,
       serviceId: id,
+      title: details.title,
       review: trimmedReview,
       UserName: user.displayName,
       uid: user.uid,

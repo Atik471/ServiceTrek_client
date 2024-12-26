@@ -22,9 +22,10 @@ const MyReview = ({ review, reviews, setReviews }) => {
         </div>
         {currReview.UserName}
       </td>
+      <td className="px-4 py-2">{currReview?.title}</td>
       <td className="px-4 py-2">{currReview.date}</td>
       <td className="px-4 py-2 text-gray-700">{currReview.review}</td>
-      <td className="px-4 py-2">
+      <td className="px-4 py-2 flex gap-3">
         <Button
           variant="contained"
           color="primary"
