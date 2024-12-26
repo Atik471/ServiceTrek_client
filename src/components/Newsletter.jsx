@@ -24,7 +24,7 @@ const Newsletter = () => {
         {subscribed ? (
           <p className="text-xl text-green-400">Thank you for subscribing!</p>
         ) : (
-          <form onSubmit={handleSubscribe} className="flex justify-center items-center space-x-4">
+          <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row gap-4 justify-center items-center space-x-4">
             <input
               type="email"
               value={email}

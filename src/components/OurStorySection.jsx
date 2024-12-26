@@ -1,8 +1,8 @@
 
 const OurStorySection = () => {
   return (
-    <section className="py-16 md:px-24 px-6 bg-blue-100">
-      <div className="container mx-auto text-left flex flex-col md:flex-row gap-8 items-center justify-between px-6">
+    <section className="md:py-16 py-12 md:px-24 px-6 bg-blue-100">
+      <div className="container mx-auto text-left flex flex-col md:flex-row gap-8 items-center justify-between md:px-6">
         <div className="w-full md:w-1/2">
           <h2 className="text-3xl font-semibold text-gray-800 mb-8">Our Story</h2>
           <p className="text-lg text-gray-600 mb-6">

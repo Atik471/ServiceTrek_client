@@ -135,7 +135,7 @@ const MyServices = () => {
         <title>ServiceTrek | My Services</title>
       </Helmet>
 
-      <div className="py-4 flex justify-center items-center">
+      <div className="py-4 flex justify-center items-center overflow-x-auto">
         <form
           onSubmit={handleSearch}
           className="flex items-center border border-gray-300 rounded-lg px-3 py-2 w-full max-w-md"

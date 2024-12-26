@@ -48,7 +48,7 @@ const Banner = () => {
                 alt={`Banner ${index + 1}`}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-20 flex  flex-col  gap-4 items-center justify-center font-mono">
+              <div className="absolute inset-0 bg-black bg-opacity-20 flex flex-col  gap-4 items-center justify-center font-mono">
                 {bannerText[index]}
               </div>
             </div>

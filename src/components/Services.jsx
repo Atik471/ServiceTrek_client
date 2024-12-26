@@ -122,7 +122,7 @@ const Services = () => {
         </form>
       </div>
 
-      <div className="py-4 flex justify-center items-center">
+      <div className="py-4 flex flex-col md:flex-row gap-4 justify-center items-center">
         <label className="mr-2 flex items-center text-gray-700">
           <FaFilter size={18} className="mr-2" />
           Filter by category

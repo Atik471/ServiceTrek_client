@@ -54,7 +54,7 @@ const MyReviews = () => {
       </Helmet>
 
       {reviews && reviews.length > 0 ? (
-        <div className="mt-12 px-[3%]">
+        <div className="mt-12 px-[3%] overflow-x-auto">
           <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
             <thead>
               <tr className="bg-gray-200 text-gray-700">
