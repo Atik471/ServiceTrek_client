@@ -18,7 +18,7 @@ const MyReviews = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${serverDomain}/my-reviews/${user.uid}`, {withCredentials: true});
+        const res = await axios.get(`${serverDomain}/my-reviews/${user.uid}`);
         setReviews(res.data);
       } catch (err) {
         toast.error(`Failed to fetch your services ${err}`, {
@@ -67,7 +67,7 @@ const MyReviews = () => {
             </thead>
             <tbody>
               {reviews.map((review, index) => (
-                <MyReview key={index} review={review} className="border-t border-gray-300">
+                <MyReview key={index} review={review} reviews={reviews} setReviews={setReviews} className="border-t border-gray-300">
                   
                 </MyReview>
               ))}

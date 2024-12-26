@@ -22,9 +22,9 @@ import { useNavigate } from "react-router-dom";
       console.log(review._id)
       try {
         const response = await axios.delete(
-          `${serverDomain}/delete-review/${review._id}`, {withCredentials: true}
+          `${serverDomain}/delete-review/${review._id}`
         );
-        setReviews(reviews.filter((item) => item._id !== review._id));
+        setReviews(reviews?.filter((item) => item._id !== review._id));
         toast.success("Deleted Successfully!", {
           position: "top-left",
           autoClose: 2000,

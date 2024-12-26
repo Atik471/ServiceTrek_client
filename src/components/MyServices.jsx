@@ -69,7 +69,6 @@ const MyServices = () => {
       setLoading(true);
       const response = await axios.get(
         `${serverDomain}/my-services/search/${user.uid}`,
-        { withCredentials: true },
         {
           params: {
             title: searchText,
@@ -97,7 +96,6 @@ const MyServices = () => {
       setLoading(true);
       const response = await axios.get(
         `${serverDomain}/my-services/search/${user.uid}`,
-        { withCredentials: true },
         {
           params: {
             title: searchText,
@@ -132,7 +130,7 @@ const MyServices = () => {
   }
 
   return (
-    <div>
+    <div className="flex-grow my-8">
       <Helmet>
         <title>ServiceTrek | My Services</title>
       </Helmet>

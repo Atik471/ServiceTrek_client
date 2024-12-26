@@ -28,9 +28,7 @@ const UpdateReviews = ({ review, setCurrReview, open, onClose }) => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await axios.patch(`${serverDomain}/update-review/${review._id}`, data, {
-        withCredentials: true
-      });
+      await axios.patch(`${serverDomain}/update-review/${review._id}`, data);
       setCurrReview({ ...review, ...data });
       reset();
       onClose();
