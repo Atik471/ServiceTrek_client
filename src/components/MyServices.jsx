@@ -98,26 +98,26 @@ const MyServices = () => {
   };
   
 
-  const handleCategoryReset = async () => {
-    setCategory("");
-    // handleCategoryChange()
-    try {
-      setLoading(true);
-      const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`, {
-        params: {
-          title: searchText, 
-          company: searchText, 
-          category: serviceCategories, 
-        },
-      });
-      console.log(response.data)
-      setServices(response.data); 
-    } catch (err) {
-      console.error("Error fetching data:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleCategoryReset = async () => {
+  //   setCategory("");
+  //   // handleCategoryChange()
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.get(`${serverDomain}/my-services/search/${user.uid}`, {
+  //       params: {
+  //         title: searchText, 
+  //         company: searchText, 
+  //         category: serviceCategories, 
+  //       },
+  //     });
+  //     console.log(response.data)
+  //     setServices(response.data); 
+  //   } catch (err) {
+  //     console.error("Error fetching data:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (loading) {
     return (

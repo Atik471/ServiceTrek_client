@@ -10,64 +10,57 @@ const MyReview = ({ review, reviews, setReviews }) => {
   const [currReview, setCurrReview] = useState(review);
 
   return (
-    <div className="bg-white  flex items-start space-x-4 mb-8 shadow-md max-w-[90%] mx-auto rounded-lg p-5">
-      <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
-        <img
-          src={currReview.image || "/assets/pfp.jpg"}
-          alt={currReview.UserName}
-          className="w-full h-full object-cover"
-          onError={(e) => (e.target.src = "/assets/pfp.jpg")}
-        />
-      </div>
-
-      <div className="flex-1">
-        <div className="mb-2">
-          <p className="text-sm text-gray-500">
-            {" "}
-            <span className=" mr-3 text-sm font-semibold text-gray-800">
-              {currReview.UserName}
-            </span>
-            {currReview.date}
-          </p>
+    <tr className="mx-auto border-t border-gray-300">
+      <td className="px-4 py-2 flex items-center">
+        <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300 mr-3">
+          <img
+            src={currReview.image || "/assets/pfp.jpg"}
+            alt={currReview.UserName}
+            className="w-full h-full object-cover"
+            onError={(e) => (e.target.src = "/assets/pfp.jpg")}
+          />
         </div>
+        {currReview.UserName}
+      </td>
+      <td className="px-4 py-2">{currReview.date}</td>
+      <td className="px-4 py-2 text-gray-700">{currReview.review}</td>
+      <td className="px-4 py-2">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setUpdateOpen(true)}
+        >
+          Update
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => setDeleteOpen(true)}
+        >
+          Delete
+        </Button>
 
-        <p className=" text-gray-700">{currReview.review}</p>
-      </div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setUpdateOpen(true)}
-      >
-        Update
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => setDeleteOpen(true)}
-      >
-        Delete
-      </Button>
+        <UpdateReviews
+          review={currReview}
+          setCurrReview={setCurrReview}
+          open={updateOpen}
+          onClose={() => setUpdateOpen(false)}
+        />
 
-      <UpdateReviews
-        review={currReview}
-        setCurrReview={setCurrReview}
-        open={updateOpen}
-        onClose={() => setUpdateOpen(false)}
-      />
-
-      <DeleteReviews
-        review={currReview}
-        reviews={reviews}
-        setReviews={setReviews}
-        open={deleteOpen}
-        onClose={() => setDeleteOpen(false)}
-      />
-    </div>
+        <DeleteReviews
+          review={currReview}
+          reviews={reviews}
+          setReviews={setReviews}
+          open={deleteOpen}
+          onClose={() => setDeleteOpen(false)}
+        />
+      </td>
+    </tr>
   );
 };
 
 MyReview.propTypes = {
-  review: PropTypes.object.isRequired,
+  review: PropTypes.object,
   reviews: PropTypes.array,
   setReviews: PropTypes.func,
 };
