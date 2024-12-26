@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
 import { toast } from "react-toastify";
 import Review from "./Review";
+import ReactStars from "react-stars";
 
 const ServiceDetails = () => {
   const [details, setDetails] = useState();
@@ -15,6 +16,11 @@ const ServiceDetails = () => {
   const { id } = useParams();
   const serverDomain = useContext(LocationContext);
   const { user } = useContext(AuthContext);
+  const [rating, setRating] = useState(0); 
+
+  const handleRatingChange = (newRating) => {
+    setRating(newRating); 
+  };
 
   const {
     register,
@@ -84,6 +90,7 @@ const ServiceDetails = () => {
       uid: user.uid,
       photo: user.photoURL,
       date: formattedDate,
+      rating: rating,
     };
     await axios
       .post(`${serverDomain}/reviews/add`, review)
@@ -120,7 +127,7 @@ const ServiceDetails = () => {
   }
 
   return (
-    <div className="md:p-6 pt-6 md:max-w-[90%] max-w-[90%] mx-auto">
+    <div className="md:p-6 pt-6 md:w-[90%] max-w-[90%] mx-auto">
       <Helmet>
         <title>ServiceTrek | Services Details</title>
       </Helmet>
@@ -147,9 +154,17 @@ const ServiceDetails = () => {
             <p className="text-xs text-white font-bold bg-blue-500 px-2 py-1 rounded-lg inline-block">
               Category: {details.category}
             </p>
-            <p className="text-sm text-gray-600">
-              Posted by: {details.UserName}
-            </p>
+            <div className="flex gap-3  items-center">
+            <img
+                src={user.imageURL || "/assets/pfp.jpg"}
+                alt=""
+          
+                className="w-10 h-10 border-2 border-gray-500 rounded-full cursor-pointer"
+              />
+              <p className="text-sm text-gray-600">
+                Posted by: {details.UserName}
+              </p>
+            </div>
             <p className="text-sm text-gray-500">Company: {details.company}</p>
             <p className="text-gray-700">{details.description}</p>
             <p className="text-sm text-gray-500">Date: {details.date}</p>
@@ -189,6 +204,13 @@ const ServiceDetails = () => {
               </p>
             )}
           </div>
+          <ReactStars
+            count={5} 
+            value={rating} 
+            onChange={handleRatingChange}
+            size={40}
+            color2={"#ffd700"}
+          />
 
           <button
             type="submit"

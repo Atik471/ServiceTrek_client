@@ -14,6 +14,7 @@ const AddService = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
   const {
     register,
     handleSubmit,
@@ -196,6 +197,8 @@ const AddService = () => {
             <p style={{ color: "red", marginTop: "5px" }}>{errors.category.message}</p>
           )}
         </FormControl>
+
+
 
         <Button
           type="submit"

@@ -62,6 +62,7 @@ const MyReviews = () => {
                 <th className="px-4 py-2 text-left">Service</th>
                 <th className="px-4 py-2 text-left">Date</th>
                 <th className="px-4 py-2 text-left">Review</th>
+                <th className="px-4 py-2 text-left">Rating</th>
                 <th className="px-4 py-2 text-left">Actions</th>
               </tr>
             </thead>

@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import UpdateReviews from "./UpdateReviews";
+import ReactStars from "react-stars";
 
 const MyReview = ({ review, reviews, setReviews }) => {
   const [updateOpen, setUpdateOpen] = useState(false);
@@ -25,12 +26,20 @@ const MyReview = ({ review, reviews, setReviews }) => {
       <td className="px-4 py-2">{currReview?.title}</td>
       <td className="px-4 py-2">{currReview.date}</td>
       <td className="px-4 py-2 text-gray-700">{currReview.review}</td>
-      <td  className="flex gap-3 my-4 px-2">
+      <td className="px-4 py-2 text-gray-700">
+        <ReactStars
+          count={5}
+          value={currReview.rating}
+          edit={false}
+          size={40}
+          color2={"#ffd700"}
+        />
+      </td>
+      <td className="flex gap-3 my-4 px-2">
         <Button
           variant="contained"
           color="primary"
           onClick={() => setUpdateOpen(true)}
-          
         >
           Update
         </Button>

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import ReactStars from "react-stars";
 
 const Review = ({ review }) => {
   return (
@@ -20,6 +21,13 @@ const Review = ({ review }) => {
         </div>
 
         <p className=" text-gray-700">{review.review}</p>
+        <ReactStars
+            count={5} 
+            value={review?.rating} 
+            edit={false}
+            size={40}
+            color2={"#ffd700"}
+          />
       </div>
     </div>
   );
