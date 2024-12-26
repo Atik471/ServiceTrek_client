@@ -22,6 +22,7 @@ const MyService = ({ service, services, setServices }) => {
       />
       <div className="flex flex-col space-y-4">
         <h3 className="text-xl font-semibold text-gray-800">{service.title}</h3>
+        <h3 className="text-sm font-semibold pb-2 text-gray-800">Company: {service.company}</h3>
         {service.description?.length > 100
           ? `${service.description.slice(0, 100)}...`
           : service.description}

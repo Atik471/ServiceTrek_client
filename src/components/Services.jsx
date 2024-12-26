@@ -68,18 +68,15 @@ const Services = () => {
   };
 
   const handleSearch = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
+    const inputValue = e.target.searchInput.value.trim(); 
+    setSearchText(inputValue); 
     setPage(1); 
   };
 
-  // Handle category change
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
     setCategory(selectedCategory); 
-  };
-
-  const handleSearchInputChange = (e) => {
-    setSearchText(e.target.value); 
   };
 
   const handleCategoryReset = () => {
@@ -112,9 +109,8 @@ const Services = () => {
         >
           <input
             type="text"
+            name="searchInput" 
             placeholder="Search by title, company, or category..."
-            value={searchText}
-            onChange={handleSearchInputChange}
             className="w-full outline-none text-gray-700"
           />
           <button
@@ -136,7 +132,7 @@ const Services = () => {
           onChange={handleCategoryChange}
           className="border border-gray-300 rounded-lg px-2 py-1 ml-2"
         >
-          <option value="">All Categories</option> {/* Reset option */}
+          <option value="">All Categories</option> 
           {serviceCategories.map((categoryName, index) => (
             <option key={index} value={categoryName}>
               {categoryName}
