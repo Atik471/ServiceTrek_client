@@ -5,12 +5,14 @@ import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
 import MyService from "./MyService";
+import { FaSearch } from "react-icons/fa";
 
 const MyServices = () => {
   const { user } = useContext(AuthContext);
   const serverDomain = useContext(LocationContext);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     axios
@@ -27,6 +29,27 @@ const MyServices = () => {
         setLoading(false);
       });
   }, [serverDomain, user.uid]);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await axios.get(`${serverDomain}/my-services/search`, {
+        params: {
+          title: searchText,
+          company: searchText,
+          category: searchText,
+        },
+      });
+      console.log(response.data); 
+  
+      setServices(response.data); 
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -47,6 +70,26 @@ const MyServices = () => {
         <title>ServiceTrek | My Services</title>
       </Helmet>
 
+      <div className="py-4 flex justify-center items-center">
+        <form
+          onSubmit={handleSearch}
+          className="flex items-center border border-gray-300 rounded-lg px-3 py-2 w-full max-w-md"
+        >
+          <input
+            type="text"
+            placeholder="Search by title, company, or category..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full outline-none text-gray-700"
+          />
+          <button
+            type="submit"
+            className="text-gray-500 hover:text-gray-700 ml-2"
+          >
+            <FaSearch size={20} />
+          </button>
+        </form>
+      </div>
       {services && services.length > 0 ? (
         <div className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6">
           {services.map((service, index) => (

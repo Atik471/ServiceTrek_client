@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { LocationContext } from "../contexts/LocationProvider";
 import Service from "./Service";
-import { FaSearch } from "react-icons/fa";
+import { FaFilter, FaSearch } from "react-icons/fa";
 
 const Services = () => {
   const [items, setItems] = useState([]);
@@ -12,7 +12,22 @@ const Services = () => {
   const [loading, setLoading] = useState(false);
   const serverDomain = useContext(LocationContext);
   const [searchText, setSearchText] = useState("");
-  const [query, setQuery] = useState(""); 
+  const [category, setCategory] = useState(""); 
+
+  const serviceCategories = [
+    "Health & Wellness",
+    "Education & Learning",
+    "Home & Maintenance",
+    "Technology & IT",
+    "Automotive Services",
+    "Travel & Tourism",
+    "Food & Catering",
+    "Fashion & Beauty",
+    "Event Planning",
+    "Sports & Fitness",
+    "Finance & Accounting",
+    "Entertainment & Media"
+  ];
 
   const limit = 10;
 
@@ -21,7 +36,16 @@ const Services = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `${serverDomain}/services?page=${page}&limit=${limit}`
+          `${serverDomain}/services/search`,
+          {
+            params: {
+              title: searchText,
+              company: searchText,
+              category: category,
+              page: page,
+              limit: limit,
+            },
+          }
         );
         setItems(response.data.items);
         setTotalPages(response.data.totalPages);
@@ -33,7 +57,7 @@ const Services = () => {
     };
 
     fetchData();
-  }, [page, serverDomain]);
+  }, [page, searchText, category, serverDomain]);
 
   const handlePrev = () => {
     if (page > 1) setPage((prev) => prev - 1);
@@ -45,31 +69,22 @@ const Services = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      setPage(1); 
-      const response = await axios.get(`${serverDomain}/services/search`, {
-        params: {
-          title: searchText,
-          company: searchText,
-          category: searchText,
-          page: 1,
-          limit,
-        },
-      });
-      console.log(response.data.items); 
-  
-      setItems(response.data.items); 
-      setTotalPages(response.data.totalPages); 
-    } catch (err) {
-      console.error("Error fetching data:", err);
-    } finally {
-      setLoading(false);
-    }
+    setPage(1); 
   };
-  
-  
-  
+
+  // Handle category change
+  const handleCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setCategory(selectedCategory); 
+  };
+
+  const handleSearchInputChange = (e) => {
+    setSearchText(e.target.value); 
+  };
+
+  const handleCategoryReset = () => {
+    setCategory(""); 
+  };
 
   if (loading) {
     return (
@@ -89,6 +104,7 @@ const Services = () => {
       <Helmet>
         <title>ServiceTrek | Services</title>
       </Helmet>
+
       <div className="py-4 flex justify-center items-center">
         <form
           onSubmit={handleSearch}
@@ -98,7 +114,7 @@ const Services = () => {
             type="text"
             placeholder="Search by title, company, or category..."
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={handleSearchInputChange}
             className="w-full outline-none text-gray-700"
           />
           <button
@@ -109,11 +125,41 @@ const Services = () => {
           </button>
         </form>
       </div>
+
+      <div className="py-4 flex justify-center items-center">
+        <label className="mr-2 flex items-center text-gray-700">
+          <FaFilter size={18} className="mr-2" />
+          Filter by category
+        </label>
+        <select
+          value={category}
+          onChange={handleCategoryChange}
+          className="border border-gray-300 rounded-lg px-2 py-1 ml-2"
+        >
+          <option value="">All Categories</option> {/* Reset option */}
+          {serviceCategories.map((categoryName, index) => (
+            <option key={index} value={categoryName}>
+              {categoryName}
+            </option>
+          ))}
+        </select>
+
+        {category && (
+          <button
+            onClick={handleCategoryReset}
+            className="ml-2 text-sm text-red-500 hover:text-red-700"
+          >
+            Reset category
+          </button>
+        )}
+      </div>
+
       <div className="grid md:grid-cols-4 grid-cols-1 gap-4 md:px-24 px-6">
         {items?.map((item) => (
           <Service key={item._id} service={item}></Service>
         ))}
       </div>
+
       <div className="flex justify-center items-center mt-6 space-x-4">
         <button
           onClick={handlePrev}
@@ -133,7 +179,6 @@ const Services = () => {
           Next
         </button>
       </div>
-
     </div>
   );
 };
