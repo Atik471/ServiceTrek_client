@@ -40,10 +40,10 @@ const TopServices = () => {
   return (
     <div>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6">
-              {services?.map((item) => (
-                <Service key={item._id} service={item}></Service>
-              ))}
-            </div>
+        {services?.map((item) => (
+          <Service key={item._id} service={item}></Service>
+        ))}
+      </div>
     </div>
   );
 };

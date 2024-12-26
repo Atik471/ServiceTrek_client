@@ -5,7 +5,8 @@ export const LocationContext = createContext()
 
 const LocationProvider = ({ children }) => {
 
-    const serverDomain = "http://localhost:5000"
+    // const serverDomain = "http://localhost:5000"
+    const serverDomain = "https://service-trek-server.vercel.app"
     return (
         <LocationContext.Provider value={serverDomain}>
             {children}
