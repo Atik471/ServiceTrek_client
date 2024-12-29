@@ -9,13 +9,12 @@ import {
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const UpdateReviews = ({ review, setCurrReview, open, onClose }) => {
-  const [loading, setLoading] = useState(false);
+const UpdateReviews = ({ review, setCurrReview, open, onClose, setLoading }) => {
   const serverDomain = useContext(LocationContext);
   const navigate = useNavigate();
   const {
@@ -46,19 +45,6 @@ const UpdateReviews = ({ review, setCurrReview, open, onClose }) => {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="relative">
-          <div className="w-16 h-16 border-4 border-primary border-solid rounded-full animate-spin border-t-transparent"></div>
-          <p className="absolute inset-0 flex items-center justify-center text-primary font-semibold text-xl">
-            Loading...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -99,6 +85,7 @@ UpdateReviews.propTypes = {
   onClose: PropTypes.func.isRequired,
   review: PropTypes.object.isRequired,
   setCurrReview: PropTypes.func.isRequired,
+  setLoading: PropTypes.func
 };
 
 export default UpdateReviews;

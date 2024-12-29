@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import UpdateReviews from "./UpdateReviews";
 import ReactStars from "react-stars";
 
-const MyReview = ({ review, reviews, setReviews }) => {
+const MyReview = ({ review, reviews, setReviews, setLoading }) => {
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [currReview, setCurrReview] = useState(review);
@@ -15,7 +15,7 @@ const MyReview = ({ review, reviews, setReviews }) => {
       <td className="px-4 py-2 flex items-center">
         <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300 mr-3">
           <img
-            src={currReview.image || "/assets/pfp.jpg"}
+            src={currReview.photoURL || "/assets/pfp.jpg"}
             alt={currReview.UserName}
             className="w-full h-full object-cover"
             onError={(e) => (e.target.src = "/assets/pfp.jpg")}
@@ -55,6 +55,7 @@ const MyReview = ({ review, reviews, setReviews }) => {
           review={currReview}
           setCurrReview={setCurrReview}
           open={updateOpen}
+          setLoading={setLoading}
           onClose={() => setUpdateOpen(false)}
         />
 
@@ -63,6 +64,7 @@ const MyReview = ({ review, reviews, setReviews }) => {
           reviews={reviews}
           setReviews={setReviews}
           open={deleteOpen}
+          setLoading={setLoading}
           onClose={() => setDeleteOpen(false)}
         />
       </td>
@@ -74,6 +76,7 @@ MyReview.propTypes = {
   review: PropTypes.object,
   reviews: PropTypes.array,
   setReviews: PropTypes.func,
+  setLoading: PropTypes.func
 };
 
 export default MyReview;

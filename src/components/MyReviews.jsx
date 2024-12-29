@@ -68,7 +68,7 @@ const MyReviews = () => {
             </thead>
             <tbody>
               {reviews.map((review, index) => (
-                <MyReview key={index} review={review} reviews={reviews} setReviews={setReviews} className="border-t border-gray-300">
+                <MyReview key={index} review={review} reviews={reviews} setReviews={setReviews} setLoading={setLoading} className="border-t border-gray-300">
                   
                 </MyReview>
               ))}

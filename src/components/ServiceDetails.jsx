@@ -135,7 +135,7 @@ const ServiceDetails = () => {
         <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-6">
           <div className="w-full md:w-1/3">
             <img
-              src={details.imageURL || "/assets/service_fallback.png"}
+              src={details.photoURL || "/assets/service_fallback.png"}
               alt={details.title}
               className="w-full h-64 object-cover rounded-md border border-gray-200"
               onError={(e) => (e.target.src = "/assets/service_fallback.png")}
@@ -156,7 +156,7 @@ const ServiceDetails = () => {
             </p>
             <div className="flex gap-3  items-center">
             <img
-                src={user.imageURL || "/assets/pfp.jpg"}
+                src={user?.photoURL || "/assets/pfp.jpg"}
                 alt=""
           
                 className="w-10 h-10 border-2 border-gray-500 rounded-full cursor-pointer"

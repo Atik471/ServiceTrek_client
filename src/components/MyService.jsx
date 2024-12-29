@@ -4,7 +4,7 @@ import UpdateService from "./UpdateService";
 import DeleteService from "./DeleteService";
 import PropTypes from "prop-types";
 
-const MyService = ({ service, services, setServices }) => {
+const MyService = ({ service, services, setServices, setLoading }) => {
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [currservice, setCurrservice] = useState(service);
@@ -40,6 +40,7 @@ const MyService = ({ service, services, setServices }) => {
             service={currservice}
             setCurrservice={setCurrservice}
             open={updateOpen}
+            setLoading={setLoading}
             onClose={() => setUpdateOpen(false)}
           />
 
@@ -48,6 +49,7 @@ const MyService = ({ service, services, setServices }) => {
             services={services}
             setServices={setServices}
             open={deleteOpen}
+            setLoading={setLoading}
             onClose={() => setDeleteOpen(false)}
           />
         </div>
@@ -60,6 +62,7 @@ MyService.propTypes = {
   service: PropTypes.object.isRequired,
   services: PropTypes.array,
   setServices: PropTypes.func,
+  setLoading: PropTypes.func
 };
 
 export default MyService;

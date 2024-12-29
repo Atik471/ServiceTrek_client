@@ -203,6 +203,7 @@ const MyServices = () => {
                 service={service}
                 services={services}
                 setServices={setServices}
+                setLoading={setLoading}
               />
             ))}
           </tbody>

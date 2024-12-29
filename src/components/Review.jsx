@@ -6,7 +6,7 @@ const Review = ({ review }) => {
     <div className="bg-white  flex items-start space-x-4 mb-8">
       <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-300">
         <img
-          src={review.image || "/assets/pfp.jpg"}
+          src={review.photoURL || "/assets/pfp.jpg"}
           alt={review.UserName}
           className="w-full h-full object-cover"
           onError={(e) => (e.target.src = "/assets/pfp.jpg")}
