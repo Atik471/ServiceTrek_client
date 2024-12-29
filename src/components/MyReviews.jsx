@@ -14,6 +14,12 @@ const MyReviews = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const updateReviewInParent = (id, updatedReview) => {
+    setReviews((prevReviews) =>
+      prevReviews.map((review) => (review._id === id ? updatedReview : review))
+    );
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -68,7 +74,7 @@ const MyReviews = () => {
             </thead>
             <tbody>
               {reviews.map((review, index) => (
-                <MyReview key={index} review={review} reviews={reviews} setReviews={setReviews} setLoading={setLoading} className="border-t border-gray-300">
+                <MyReview key={index} review={review} reviews={reviews} setReviews={setReviews} setLoading={setLoading} updateReviewInParent={updateReviewInParent}className="border-t border-gray-300">
                   
                 </MyReview>
               ))}

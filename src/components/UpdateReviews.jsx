@@ -14,7 +14,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const UpdateReviews = ({ review, setCurrReview, open, onClose, setLoading }) => {
+const UpdateReviews = ({ review, setCurrReview, open, onClose, setLoading, updateReviewInParent }) => {
   const serverDomain = useContext(LocationContext);
   const navigate = useNavigate();
   const {
@@ -28,7 +28,10 @@ const UpdateReviews = ({ review, setCurrReview, open, onClose, setLoading }) => 
     setLoading(true);
     try {
       await axios.patch(`${serverDomain}/update-review/${review._id}`, data);
+      const updatedReview = { ...review, ...data };
       setCurrReview({ ...review, ...data });
+      updateReviewInParent(review._id, updatedReview);
+
       reset();
       onClose();
       toast.success("Update Successful!", {
@@ -85,7 +88,8 @@ UpdateReviews.propTypes = {
   onClose: PropTypes.func.isRequired,
   review: PropTypes.object.isRequired,
   setCurrReview: PropTypes.func.isRequired,
-  setLoading: PropTypes.func
+  setLoading: PropTypes.func,
+  updateReviewInParent: PropTypes.func
 };
 
 export default UpdateReviews;

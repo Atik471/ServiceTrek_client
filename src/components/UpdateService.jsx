@@ -15,7 +15,7 @@ import { LocationContext } from "../contexts/LocationProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const UpdateService = ({ service, setCurrservice, open, onClose, setLoading }) => {
+const UpdateService = ({ service, setCurrservice, open, onClose, setLoading, updateServiceInParent }) => {
   const serverDomain = useContext(LocationContext);
   const navigate = useNavigate();
   const {
@@ -44,6 +44,8 @@ const UpdateService = ({ service, setCurrservice, open, onClose, setLoading }) =
     setLoading(true);
     try {
       await axios.patch(`${serverDomain}/update-service/${service._id}`, data);
+      const updatedService = { ...service, ...data };
+      updateServiceInParent(service._id, updatedService);
       setCurrservice({ ...service, ...data });
       reset();
       onClose();
@@ -183,7 +185,8 @@ UpdateService.propTypes = {
   onClose: PropTypes.func.isRequired,
   service: PropTypes.object,
   setCurrservice: PropTypes.func,
-  setLoading: PropTypes.func
+  setLoading: PropTypes.func,
+  updateServiceInParent: PropTypes.func
 };
 
 export default UpdateService;

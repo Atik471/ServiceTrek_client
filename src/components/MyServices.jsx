@@ -32,6 +32,12 @@ const MyServices = () => {
     "Entertainment & Media",
   ];
 
+  const updateServiceInParent = (id, updatedService) => {
+    setServices((prevServices) =>
+      prevServices.map((service) => (service._id === id ? updatedService : service))
+    );
+  };
+
   useEffect(() => {
     console.log(category);
     axios
@@ -173,15 +179,6 @@ const MyServices = () => {
             </option>
           ))}
         </select>
-
-        {/* {category && (
-          <button
-            onClick={handleCategoryReset}
-            className="ml-2 text-sm text-red-500 hover:text-red-700"
-          >
-            Reset category
-          </button>
-        )} */}
       </div>
 
       {services && services.length > 0 ? (
@@ -204,6 +201,7 @@ const MyServices = () => {
                 services={services}
                 setServices={setServices}
                 setLoading={setLoading}
+                updateServiceInParent={updateServiceInParent}
               />
             ))}
           </tbody>

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import UpdateReviews from "./UpdateReviews";
 import ReactStars from "react-stars";
 
-const MyReview = ({ review, reviews, setReviews, setLoading }) => {
+const MyReview = ({ review, reviews, setReviews, setLoading, updateReviewInParent }) => {
   const [updateOpen, setUpdateOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [currReview, setCurrReview] = useState(review);
@@ -56,6 +56,7 @@ const MyReview = ({ review, reviews, setReviews, setLoading }) => {
           setCurrReview={setCurrReview}
           open={updateOpen}
           setLoading={setLoading}
+          updateReviewInParent={updateReviewInParent}
           onClose={() => setUpdateOpen(false)}
         />
 
@@ -76,7 +77,8 @@ MyReview.propTypes = {
   review: PropTypes.object,
   reviews: PropTypes.array,
   setReviews: PropTypes.func,
-  setLoading: PropTypes.func
+  setLoading: PropTypes.func,
+  updateReviewInParent: PropTypes.func
 };
 
 export default MyReview;
