@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LocationContext } from "../contexts/LocationProvider";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -16,10 +16,11 @@ const ServiceDetails = () => {
   const { id } = useParams();
   const serverDomain = useContext(LocationContext);
   const { user } = useContext(AuthContext);
-  const [rating, setRating] = useState(0); 
+  const [rating, setRating] = useState(0);
+  const navigate = useNavigate();
 
   const handleRatingChange = (newRating) => {
-    setRating(newRating); 
+    setRating(newRating);
   };
 
   const {
@@ -155,10 +156,9 @@ const ServiceDetails = () => {
               Category: {details.category}
             </p>
             <div className="flex gap-3  items-center">
-            <img
+              <img
                 src={user?.photoURL || "/assets/pfp.jpg"}
                 alt=""
-          
                 className="w-10 h-10 border-2 border-gray-500 rounded-full cursor-pointer"
               />
               <p className="text-sm text-gray-600">
@@ -205,19 +205,25 @@ const ServiceDetails = () => {
             )}
           </div>
           <ReactStars
-            count={5} 
-            value={rating} 
+            count={5}
+            value={rating}
             onChange={handleRatingChange}
             size={40}
             color2={"#ffd700"}
           />
 
-          <button
-            type="submit"
-            className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-200"
-          >
-            Submit
-          </button>
+          {user ? (
+            <button
+              type="submit"
+              className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-200"
+            >
+              Submit
+            </button>
+          ) : (
+            <button onClick={() => navigate('/login')} className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-200">
+              Login to Submit
+            </button>
+          )}
         </form>
       </div>
 
