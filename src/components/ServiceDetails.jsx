@@ -13,6 +13,7 @@ const ServiceDetails = () => {
   const [details, setDetails] = useState();
   const [reviews, setReviews] = useState();
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const { id } = useParams();
   const serverDomain = useContext(LocationContext);
   const { user } = useContext(AuthContext);
@@ -77,6 +78,7 @@ const ServiceDetails = () => {
   }, [id, serverDomain]);
 
   const onSubmit = async (data) => {
+    setSubmitting(true); // start loading
     const now = new Date();
     const formattedDate = `${String(now.getDate()).padStart(2, "0")}-${String(
       now.getMonth() + 1
@@ -93,25 +95,23 @@ const ServiceDetails = () => {
       date: formattedDate,
       rating: rating,
     };
-    await axios
-      .post(`${serverDomain}/reviews/add`, review)
-      .then(() => {
-        toast.success("Review posted successfuly!", {
-          position: "top-left",
-          autoClose: 2000,
-        });
-        fetchData();
-        reset();
-      })
-      .catch((error) => {
-        toast.error(
-          `Failed to post review. Please try again! ${error.message}`,
-          {
-            position: "top-left",
-            autoClose: 2000,
-          }
-        );
+
+    try {
+      await axios.post(`${serverDomain}/reviews/add`, review);
+      toast.success("Review posted successfully!", {
+        position: "top-left",
+        autoClose: 2000,
       });
+      fetchData();
+      reset();
+    } catch (error) {
+      toast.error(`Failed to post review. ${error.message}`, {
+        position: "top-left",
+        autoClose: 2000,
+      });
+    } finally {
+      setSubmitting(false); // end loading
+    }
   };
 
   if (loading) {
@@ -215,12 +215,42 @@ const ServiceDetails = () => {
           {user ? (
             <button
               type="submit"
-              className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-200"
+              disabled={submitting}
+              className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-200 flex items-center justify-center gap-2"
             >
-              Submit
+              {submitting ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
+                  </svg>
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
+              )}
             </button>
           ) : (
-            <button onClick={() => navigate('/login')} className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-200">
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary-dark transition duration-200"
+            >
               Login to Submit
             </button>
           )}
