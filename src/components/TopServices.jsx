@@ -59,7 +59,7 @@ const TopServices = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="grid md:grid-cols-3 grid-cols-1 gap-4 md:px-24 px-6"
+      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:px-16 px-6"
     >
       {services?.map((item) => (
         <motion.div key={item._id} variants={itemVariants}>
