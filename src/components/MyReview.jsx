@@ -31,7 +31,7 @@ const MyReview = ({ review, reviews, setReviews, setLoading, updateReviewInParen
           count={5}
           value={currReview.rating}
           edit={false}
-          size={40}
+          size={20}
           color2={"#ffd700"}
         />
       </td>

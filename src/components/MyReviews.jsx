@@ -53,39 +53,46 @@ const MyReviews = () => {
     );
   }
 
-  return (
-    <div className="flex-grow my-12">
-      <Helmet>
-        <title>ServiceTrek | My Reviews</title>
-      </Helmet>
+return (
+  <div className="flex-grow my-12">
+    <Helmet>
+      <title>ServiceTrek | My Reviews</title>
+    </Helmet>
 
-      {reviews && reviews.length > 0 ? (
-        <div className="mt-12 px-[3%] overflow-x-auto">
-          <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
-            <thead>
-              <tr className="bg-gray-200 text-gray-700">
-                <th className="px-4 py-2 text-left">User</th>
-                <th className="px-4 py-2 text-left">Service</th>
-                <th className="px-4 py-2 text-left">Date</th>
-                <th className="px-4 py-2 text-left">Review</th>
-                <th className="px-4 py-2 text-left">Rating</th>
-                <th className="px-4 py-2 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reviews.map((review, index) => (
-                <MyReview key={index} review={review} reviews={reviews} setReviews={setReviews} setLoading={setLoading} updateReviewInParent={updateReviewInParent}className="border-t border-gray-300">
-                  
-                </MyReview>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <p>No reviews found.</p>
-      )}
-    </div>
-  );
+    {reviews && reviews.length > 0 ? (
+      <div className="mt-12 px-4 sm:px-6 overflow-x-auto">
+        <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
+          <thead>
+            <tr className="bg-gray-200 text-gray-700 text-sm sm:text-base">
+              <th className="px-4 py-2 text-left whitespace-nowrap">User</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Service</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Date</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Review</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Rating</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reviews.map((review, index) => (
+              <MyReview
+                key={index}
+                review={review}
+                reviews={reviews}
+                setReviews={setReviews}
+                setLoading={setLoading}
+                updateReviewInParent={updateReviewInParent}
+                className="border-t border-gray-300"
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p className="text-center text-gray-600 mt-6">No reviews found.</p>
+    )}
+  </div>
+);
+
 };
 
 export default MyReviews;
