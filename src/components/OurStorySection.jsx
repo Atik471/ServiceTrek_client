@@ -16,7 +16,7 @@ const OurStorySection = () => {
           <img
             src="/assets/our_story.jpg"
             alt="Our Story"
-            className="w-[80%] h-auto rounded-lg shadow-xl ml-auto"
+            className="w-[80%] h-auto rounded-lg shadow-xl md:ml-auto"
           />
         </div>
       </div>
