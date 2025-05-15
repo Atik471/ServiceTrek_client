@@ -135,62 +135,67 @@ const MyServices = () => {
     );
   }
 
-  return (
-    <div className="flex-grow my-8">
-      <Helmet>
-        <title>ServiceTrek | My Services</title>
-      </Helmet>
+return (
+  <div className="flex-grow my-8">
+    <Helmet>
+      <title>ServiceTrek | My Services</title>
+    </Helmet>
 
-      <div className="py-4 flex justify-center items-center overflow-x-auto">
-        <form
-          onSubmit={handleSearch}
-          className="flex items-center border border-gray-300 rounded-lg px-3 py-2 w-full max-w-md"
+    {/* Search Form */}
+    <div className="py-4 px-4 sm:px-6 flex justify-center items-center">
+      <form
+        onSubmit={handleSearch}
+        className="flex w-full max-w-md items-center border border-gray-300 rounded-lg px-3 py-2"
+      >
+        <input
+          type="text"
+          placeholder="Search by title, company, or category..."
+          value={searchText}
+          name="searchInput"
+          onChange={(e) => setSearchText(e.target.value)}
+          className="w-full outline-none text-gray-700"
+        />
+        <button
+          type="submit"
+          className="text-gray-500 hover:text-gray-700 ml-2"
         >
-          <input
-            type="text"
-            placeholder="Search by title, company, or category..."
-            value={searchText}
-            name="searchInput"
-            onChange={(e) => setSearchText(e.target.value)}
-            className="w-full outline-none text-gray-700"
-          />
-          <button
-            type="submit"
-            className="text-gray-500 hover:text-gray-700 ml-2"
-          >
-            <FaSearch size={20} />
-          </button>
-        </form>
-      </div>
-      <div className="py-4 flex justify-center items-center">
-        <label className="mr-2 flex items-center text-gray-700">
-          <FaFilter size={18} className="mr-2" />
-          Filter by category
-        </label>
-        <select
-          value={category}
-          onChange={handleCategoryChange}
-          className="border border-gray-300 rounded-lg px-2 py-1 ml-2"
-        >
-          <option value="">All Categories</option>
-          {serviceCategories.map((categoryName, index) => (
-            <option key={index} value={categoryName}>
-              {categoryName}
-            </option>
-          ))}
-        </select>
-      </div>
+          <FaSearch size={20} />
+        </button>
+      </form>
+    </div>
 
-      {services && services.length > 0 ? (
-        <table className="table-auto bg-white shadow-md rounded-lg mx-auto w-[90%]">
+    {/* Filter */}
+    <div className="py-4 px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-center gap-2">
+      <label className="flex items-center text-gray-700">
+        <FaFilter size={18} className="mr-2" />
+        Filter by category
+      </label>
+      <select
+        value={category}
+        onChange={handleCategoryChange}
+        className="border border-gray-300 rounded-lg px-2 py-1"
+      >
+        <option value="">All Categories</option>
+        {serviceCategories.map((categoryName, index) => (
+          <option key={index} value={categoryName}>
+            {categoryName}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* Table */}
+    {services && services.length > 0 ? (
+      <div className="overflow-x-auto px-4 sm:px-6">
+        <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead>
-            <tr className="bg-gray-200 text-gray-700">
-              <th className="px-4 py-2 text-left">Service Title</th>
-              <th className="px-4 py-2 text-left">Company</th>
-              <th className="px-4 py-2 text-left">Category</th>
-              <th className="px-4 py-2 text-left">Price</th>
-              <th className="px-4 py-2 text-left">Description</th>
-              <th className="px-4 py-2 text-left">Actions</th>
+            <tr className="bg-gray-200 text-gray-700 text-sm sm:text-base">
+              <th className="px-4 py-2 text-left whitespace-nowrap">Service Title</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Company</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Category</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Price</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Description</th>
+              <th className="px-4 py-2 text-left whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -206,11 +211,13 @@ const MyServices = () => {
             ))}
           </tbody>
         </table>
-      ) : (
-        <p>No services found.</p>
-      )}
-    </div>
-  );
+      </div>
+    ) : (
+      <p className="text-center text-gray-600 mt-6">No services found.</p>
+    )}
+  </div>
+);
+
 };
 
 export default MyServices;
