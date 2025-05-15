@@ -54,3 +54,92 @@
 - **Firebase**: User authentication and hosting.  
 - **Dotenv**: Environment variable management.  
 - **Cookie Parser**: Handle cookies for secure JWT storage.  
+
+Here’s a professional and clean `README.md` setup section for your **ServiceTrek** project, based on your `package.json` and project stack:
+
+## 🛠️ Setup Instructions
+
+### ✅ Prerequisites
+
+Before getting started, make sure you have the following installed:
+
+- **Node.js** (v18 or higher) – [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js) or **yarn**
+
+Check installed versions:
+
+```bash
+node -v
+npm -v
+````
+
+---
+
+### 📦 Installation
+
+Clone the repository and install the dependencies:
+
+```bash
+git clone https://github.com/your-username/servicetrek-client.git
+cd servicetrek-client
+npm install
+```
+
+---
+
+### 🚧 Development Server
+
+To run the project in development mode with hot reload:
+
+```bash
+npm run dev
+```
+
+The app will be available at:
+
+```
+http://localhost:5173
+```
+
+---
+
+### ⚙️ Build for Production
+
+To build the app for production:
+
+```bash
+npm run build
+```
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+---
+
+### 🧹 Linting
+
+To run ESLint:
+
+```bash
+npm run lint
+```
+
+## 📄 License
+
+This project is licensed under the MIT License. Feel free to fork and improve!
+
+---
+
+## 🙌 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+```
+
+Let me know if you'd like to add sections like **Environment Variables**, **Firebase Setup**, or **Feature Highlights**!
+```
