@@ -138,8 +138,3 @@ This project is licensed under the MIT License. Feel free to fork and improve!
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ---
-
-```
-
-Let me know if you'd like to add sections like **Environment Variables**, **Firebase Setup**, or **Feature Highlights**!
-```
