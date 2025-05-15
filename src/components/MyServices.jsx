@@ -213,7 +213,7 @@ return (
         </table>
       </div>
     ) : (
-      <p className="text-center text-gray-600 mt-6">No services found.</p>
+      <p className="text-center text-gray-600 mt-6 font-bold text-3xl">No services found.</p>
     )}
   </div>
 );
