@@ -71,7 +71,7 @@ const AddService = () => {
   }
 
   return (
-    <div className="p-4 max-w-[94%] md:max-w-[80%] mx-auto mt-[2rem]">
+    <div className="p-4 max-w-[94%] md:max-w-[80%] mx-auto my-[2rem]">
       <Helmet>
         <title>ServiceTrek | Add Service</title>
       </Helmet>
