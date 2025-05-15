@@ -12,7 +12,7 @@ const Services = () => {
   const [loading, setLoading] = useState(false);
   const serverDomain = useContext(LocationContext);
   const [searchText, setSearchText] = useState("");
-  const [category, setCategory] = useState(""); 
+  const [category, setCategory] = useState("");
 
   const serviceCategories = [
     "Health & Wellness",
@@ -26,7 +26,7 @@ const Services = () => {
     "Event Planning",
     "Sports & Fitness",
     "Finance & Accounting",
-    "Entertainment & Media"
+    "Entertainment & Media",
   ];
 
   const limit = 10;
@@ -35,18 +35,15 @@ const Services = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${serverDomain}/services/search`,
-          {
-            params: {
-              title: searchText,
-              company: searchText,
-              category: category,
-              page: page,
-              limit: limit,
-            },
-          }
-        );
+        const response = await axios.get(`${serverDomain}/services/search`, {
+          params: {
+            title: searchText,
+            company: searchText,
+            category: category,
+            page: page,
+            limit: limit,
+          },
+        });
         setItems(response.data.items);
         setTotalPages(response.data.totalPages);
       } catch (err) {
@@ -68,19 +65,19 @@ const Services = () => {
   };
 
   const handleSearch = async (e) => {
-    e.preventDefault(); 
-    const inputValue = e.target.searchInput.value.trim(); 
-    setSearchText(inputValue); 
-    setPage(1); 
+    e.preventDefault();
+    const inputValue = e.target.searchInput.value.trim();
+    setSearchText(inputValue);
+    setPage(1);
   };
 
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
-    setCategory(selectedCategory); 
+    setCategory(selectedCategory);
   };
 
   const handleCategoryReset = () => {
-    setCategory(""); 
+    setCategory("");
   };
 
   if (loading) {
@@ -102,14 +99,14 @@ const Services = () => {
         <title>ServiceTrek | Services</title>
       </Helmet>
 
-      <div className="py-4 flex justify-center items-center">
+      <div className="py-4 flex justify-center items-center px-4 sm:px-6">
         <form
           onSubmit={handleSearch}
           className="flex items-center border border-gray-300 rounded-lg px-3 py-2 w-full max-w-md"
         >
           <input
             type="text"
-            name="searchInput" 
+            name="searchInput"
             placeholder="Search by title, company, or category..."
             className="w-full outline-none text-gray-700"
           />
@@ -122,17 +119,17 @@ const Services = () => {
         </form>
       </div>
 
-      <div className="py-4 flex flex-col md:flex-row gap-4 justify-center items-center">
-        <label className="mr-2 flex items-center text-gray-700">
+      <div className="py-4 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4 sm:px-6">
+        <label className="flex items-center text-gray-700">
           <FaFilter size={18} className="mr-2" />
           Filter by category
         </label>
         <select
           value={category}
           onChange={handleCategoryChange}
-          className="border border-gray-300 rounded-lg px-2 py-1 ml-2"
+          className="border border-gray-300 rounded-lg px-2 py-1"
         >
-          <option value="">All Categories</option> 
+          <option value="">All Categories</option>
           {serviceCategories.map((categoryName, index) => (
             <option key={index} value={categoryName}>
               {categoryName}
@@ -143,14 +140,14 @@ const Services = () => {
         {category && (
           <button
             onClick={handleCategoryReset}
-            className="ml-2 text-sm text-red-500 hover:text-red-700"
+            className="text-sm text-red-500 hover:text-red-700"
           >
             Reset category
           </button>
         )}
       </div>
 
-      <div className="grid md:grid-cols-4 grid-cols-1 gap-4 md:px-24 px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:px-16 px-6">
         {items?.map((item) => (
           <Service key={item._id} service={item}></Service>
         ))}
